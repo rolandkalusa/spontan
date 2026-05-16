@@ -75,7 +75,6 @@
       margin: 0 auto;
       padding: 0 20px;
       flex: 1;
-      overflow-x: hidden;
     }
 
     /* ── HERO ── */
@@ -183,7 +182,7 @@
     }
     .nav-scroll-wrap {
       position: relative;
-      margin-bottom: 1.5rem;
+      margin-bottom: 0.75rem;
     }
     .nav-scroll-wrap::after {
       content: '';
@@ -385,6 +384,31 @@
       padding: 2px 8px;
       border-radius: 4px;
       background: var(--bg2);
+      color: var(--text3);
+    }
+    .room-card-contact {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--text2);
+    }
+    .room-card-contact svg {
+      width: 13px;
+      height: 13px;
+      flex-shrink: 0;
+      color: var(--text3);
+    }
+    .room-card-contact a {
+      color: var(--text2);
+      text-decoration: none;
+    }
+    .room-card-contact a:hover {
+      color: var(--text);
+    }
+    .room-card-contact-sep {
       color: var(--text3);
     }
 
@@ -1571,7 +1595,7 @@
 
     // ── VENUE ADDRESSES ──
     const venueAddresses = {
-      'TAG Theater': 'Gumpendorfer Str. 67, 1060 Wien',
+      'Löblich - Das Theater am Alsergrund': 'Löblichgasse 5/7, 1090 Wien',
       'Improtheater Wien': 'Neustiftgasse 8, 1070 Wien',
       'Die Bühne': 'Mariahilfer Str. 81, 1060 Wien',
       'Café Schmalzhaftl': 'Schmalzhofgasse 1, 1060 Wien',
@@ -1580,15 +1604,17 @@
 
     const rooms = [
       {
-        name: 'TAG Theater',
-        address: 'Gumpendorfer Str. 67, 1060 Wien',
+        name: 'Löblich - Das Theater am Alsergrund',
+        address: 'Löblichgasse 5/7, 1090 Wien',
         image: 'https://images.unsplash.com/photo-1503095396549-807759245b35?w=640&q=80',
         capacity: 60,
         priceEn: '€25/hr', priceDe: '€25/Std.',
         equipment: ['Stage', 'Lights', 'Sound', 'Chairs', 'Piano'],
         equipmentDe: ['Bühne', 'Licht', 'Ton', 'Stühle', 'Klavier'],
-        en: 'Black box theater with a full lighting rig and sound system. Popular for shows and showcases. Book via the TAG website or email.',
-        de: 'Blackbox-Theater mit kompletter Licht- und Tonanlage. Beliebt für Shows und Showcases. Buchbar über die TAG-Website oder per E-Mail.'
+        en: 'Black box theater with a full lighting rig and sound system. Popular for shows and showcases. Book via the Löblich website or email.',
+        de: 'Blackbox-Theater mit kompletter Licht- und Tonanlage. Beliebt für Shows und Showcases. Buchbar über die Löblich-Website oder per E-Mail.',
+        phone: '+43 1 586 52 22',
+        email: 'buchen@loeblich.at'
       },
       {
         name: 'Impro Studio',
@@ -1599,7 +1625,8 @@
         equipment: ['Mats', 'Mirror', 'Speaker'],
         equipmentDe: ['Matten', 'Spiegel', 'Lautsprecher'],
         en: 'Cozy rehearsal space ideal for workshops and practice groups. Wooden floors, mirrors on one wall, and a portable speaker. Hourly bookings available.',
-        de: 'Gemütlicher Proberaum, ideal für Workshops und Übungsgruppen. Holzboden, Spiegel an einer Wand und ein tragbarer Lautsprecher. Stundenweise buchbar.'
+        de: 'Gemütlicher Proberaum, ideal für Workshops und Übungsgruppen. Holzboden, Spiegel an einer Wand und ein tragbarer Lautsprecher. Stundenweise buchbar.',
+        email: 'hallo@improstudio.wien'
       },
       {
         name: 'Die Bühne',
@@ -1610,7 +1637,9 @@
         equipment: ['Stage', 'Lights', 'Chairs', 'Projector'],
         equipmentDe: ['Bühne', 'Licht', 'Stühle', 'Beamer'],
         en: 'Mid-size venue with a raised stage and flexible seating. Great for both rehearsals and small shows. Projector available for multimedia formats.',
-        de: 'Mittelgroßer Raum mit erhöhter Bühne und flexibler Bestuhlung. Perfekt für Proben und kleine Shows. Beamer für Multimedia-Formate verfügbar.'
+        de: 'Mittelgroßer Raum mit erhöhter Bühne und flexibler Bestuhlung. Perfekt für Proben und kleine Shows. Beamer für Multimedia-Formate verfügbar.',
+        phone: '+43 1 523 17 29',
+        email: 'info@diebuehne.at'
       },
       {
         name: 'Café Schmalzhaftl — Hinterzimmer',
@@ -1621,7 +1650,8 @@
         equipment: ['Chairs', 'Speaker'],
         equipmentDe: ['Stühle', 'Lautsprecher'],
         en: 'The back room of the café, available for jams and informal rehearsals. No stage — flat floor, intimate setting. Drinks from the bar included in the deal.',
-        de: 'Das Hinterzimmer des Cafés, verfügbar für Jams und informelle Proben. Keine Bühne — ebener Boden, intime Atmosphäre. Getränke von der Bar inklusive.'
+        de: 'Das Hinterzimmer des Cafés, verfügbar für Jams und informelle Proben. Keine Bühne — ebener Boden, intime Atmosphäre. Getränke von der Bar inklusive.',
+        phone: '+43 1 597 33 10'
       },
       {
         name: 'Raum 7',
@@ -1632,18 +1662,19 @@
         equipment: ['Mats', 'Mirror', 'Whiteboard'],
         equipmentDe: ['Matten', 'Spiegel', 'Whiteboard'],
         en: 'A new 80m² rehearsal space near Westbahnhof. Clean, bright, and affordable. Perfect for practice groups and small workshops.',
-        de: 'Ein neuer 80m² Proberaum in der Nähe des Westbahnhofs. Sauber, hell und günstig. Perfekt für Übungsgruppen und kleine Workshops.'
+        de: 'Ein neuer 80m² Proberaum in der Nähe des Westbahnhofs. Sauber, hell und günstig. Perfekt für Übungsgruppen und kleine Workshops.',
+        email: 'raum7@proberaum.wien'
       },
     ];
 
     // ── DATA (keyed by week offset, events repeat weekly in prototype) ──
     const weekEvents = {
       0: [
-        { title: 'Monday Night Jam', venue: 'TAG Theater', time: '19:00', endTime: '21:00', type: 'jam', lang: 'de', beg: true, day: 0, en: 'Open jam — all levels', de: 'Offener Jam — alle Levels' },
+        { title: 'Monday Night Jam', venue: 'Löblich - Das Theater am Alsergrund', time: '19:00', endTime: '21:00', type: 'jam', lang: 'de', beg: true, day: 0, en: 'Open jam — all levels', de: 'Offener Jam — alle Levels' },
         { title: 'English Improv Jam', venue: 'Improtheater Wien', time: '20:00', endTime: '22:00', type: 'jam', lang: 'en', beg: true, day: 1, en: 'The weekly English jam', de: 'Der wöchentliche englische Jam' },
         { title: 'Langform Workshop', venue: 'Die Bühne', time: '18:30', endTime: '21:00', type: 'workshop', lang: 'de', beg: false, day: 2, en: 'Deep-dive into longform', de: 'Vertiefung Langform-Strukturen' },
         { title: 'Improv Comedy Night', venue: 'Café Schmalzhaftl', time: '20:30', endTime: '22:00', type: 'show', lang: 'de', beg: false, day: 3, en: 'Fully improvised comedy', de: 'Improvisierte Comedy-Show' },
-        { title: 'English Improv Show', venue: 'TAG Theater', time: '20:00', endTime: '22:00', type: 'show', lang: 'en', beg: false, day: 4,
+        { title: 'English Improv Show', venue: 'Löblich - Das Theater am Alsergrund', time: '20:00', endTime: '22:00', type: 'show', lang: 'en', beg: false, day: 4,
           en: 'English-language improv night', de: 'Englischsprachige Impro-Show',
           address: 'Drachengasse 2, 1010 Wien',
           detailEn: 'It\'s Friday night, it\'s in the Bar and it\'s the English Lovers off the leash! What more could you want? It\'s hijinx, high emotions and the odd high note, soul searching, ham acting and deep thought; the quest for the ultimate story, the will to soar and the grace to fail.',
@@ -1654,37 +1685,37 @@
         },
         { title: 'Musical Improv Jam', venue: 'Improtheater Wien', time: '19:00', endTime: '21:00', type: 'jam', lang: 'de', beg: false, day: 4, en: 'Improvised songs & scenes', de: 'Improvisierte Songs & Szenen' },
         { title: 'Anfänger-Workshop', venue: 'Die Bühne', time: '14:00', endTime: '17:00', type: 'workshop', lang: 'de', beg: true, day: 5, en: 'Beginner workshop — no experience needed', de: 'Anfänger-Workshop — ohne Vorkenntnisse' },
-        { title: 'Saturday Night Showdown', venue: 'TAG Theater', time: '20:00', endTime: '22:00', type: 'show', lang: 'de', beg: false, day: 5, en: 'Two teams battle on stage', de: 'Zwei Teams battlen auf der Bühne' },
+        { title: 'Saturday Night Showdown', venue: 'Löblich - Das Theater am Alsergrund', time: '20:00', endTime: '22:00', type: 'show', lang: 'de', beg: false, day: 5, en: 'Two teams battle on stage', de: 'Zwei Teams battlen auf der Bühne' },
         { title: 'Sunday Open Jam', venue: 'Café Schmalzhaftl', time: '17:00', endTime: '19:00', type: 'jam', lang: 'en', beg: true, day: 6, en: 'Relaxed Sunday jam', de: 'Entspannter Sonntag-Jam' },
-        { title: 'Impro-Krimi', venue: 'TAG Theater', time: '19:30', endTime: '21:00', type: 'show', lang: 'de', beg: false, day: 6, en: 'Improvised crime mystery', de: 'Improvisierter Krimi' },
+        { title: 'Impro-Krimi', venue: 'Löblich - Das Theater am Alsergrund', time: '19:30', endTime: '21:00', type: 'show', lang: 'de', beg: false, day: 6, en: 'Improvised crime mystery', de: 'Improvisierter Krimi' },
       ],
       1: [
-        { title: 'Monday Night Jam', venue: 'TAG Theater', time: '19:00', endTime: '21:00', type: 'jam', lang: 'de', beg: true, day: 0, en: 'Open jam — all levels', de: 'Offener Jam — alle Levels' },
+        { title: 'Monday Night Jam', venue: 'Löblich - Das Theater am Alsergrund', time: '19:00', endTime: '21:00', type: 'jam', lang: 'de', beg: true, day: 0, en: 'Open jam — all levels', de: 'Offener Jam — alle Levels' },
         { title: 'Storytelling Workshop', venue: 'Impro Studio', time: '18:00', endTime: '20:30', type: 'workshop', lang: 'en', beg: true, day: 0, en: 'Learn to tell stories on stage', de: 'Geschichten auf der Bühne erzählen' },
         { title: 'English Improv Jam', venue: 'Improtheater Wien', time: '20:00', endTime: '22:00', type: 'jam', lang: 'en', beg: true, day: 1, en: 'The weekly English jam', de: 'Der wöchentliche englische Jam' },
         { title: 'Character Workshop', venue: 'Die Bühne', time: '18:30', endTime: '21:00', type: 'workshop', lang: 'de', beg: false, day: 2, en: 'Building memorable characters', de: 'Unvergessliche Figuren erschaffen' },
         { title: 'Open Mic Improv', venue: 'Café Schmalzhaftl', time: '20:00', endTime: '22:00', type: 'show', lang: 'de', beg: true, day: 3, en: 'Anyone can sign up to perform', de: 'Jeder kann sich anmelden und auftreten' },
-        { title: 'The Yes Ands: Longform', venue: 'TAG Theater', time: '20:00', endTime: '22:00', type: 'show', lang: 'en', beg: false, day: 4, en: 'Full-length improvised play', de: 'Abendfüllendes improvisiertes Stück' },
+        { title: 'The Yes Ands: Longform', venue: 'Löblich - Das Theater am Alsergrund', time: '20:00', endTime: '22:00', type: 'show', lang: 'en', beg: false, day: 4, en: 'Full-length improvised play', de: 'Abendfüllendes improvisiertes Stück' },
         { title: 'Impro Disco', venue: 'Improtheater Wien', time: '21:00', endTime: '23:00', type: 'show', lang: 'de', beg: false, day: 5, en: 'Improv meets DJ — a wild ride', de: 'Impro trifft DJ — wilder Ritt' },
         { title: 'Sunday Open Jam', venue: 'Café Schmalzhaftl', time: '17:00', endTime: '19:00', type: 'jam', lang: 'en', beg: true, day: 6, en: 'Relaxed Sunday jam', de: 'Entspannter Sonntag-Jam' },
       ],
       2: [
-        { title: 'Monday Night Jam', venue: 'TAG Theater', time: '19:00', endTime: '21:00', type: 'jam', lang: 'de', beg: true, day: 0, en: 'Open jam — all levels', de: 'Offener Jam — alle Levels' },
+        { title: 'Monday Night Jam', venue: 'Löblich - Das Theater am Alsergrund', time: '19:00', endTime: '21:00', type: 'jam', lang: 'de', beg: true, day: 0, en: 'Open jam — all levels', de: 'Offener Jam — alle Levels' },
         { title: 'English Improv Jam', venue: 'Improtheater Wien', time: '20:00', endTime: '22:00', type: 'jam', lang: 'en', beg: true, day: 1, en: 'The weekly English jam', de: 'Der wöchentliche englische Jam' },
         { title: 'Scenework Intensive', venue: 'Impro Studio', time: '10:00', endTime: '17:00', type: 'workshop', lang: 'en', beg: false, day: 2, en: 'Full-day scenework deep dive', de: 'Ganztages-Szenenarbeit' },
         { title: 'Stegreif: Game Night', venue: 'Die Bühne', time: '20:00', endTime: '22:00', type: 'show', lang: 'de', beg: true, day: 4, en: 'Audience picks the games', de: 'Das Publikum wählt die Spiele' },
-        { title: 'Impro Marathon', venue: 'TAG Theater', time: '18:00', endTime: '22:00', type: 'show', lang: 'de', beg: false, day: 5, en: '4 hours of non-stop improv', de: '4 Stunden Impro am Stück' },
+        { title: 'Impro Marathon', venue: 'Löblich - Das Theater am Alsergrund', time: '18:00', endTime: '22:00', type: 'show', lang: 'de', beg: false, day: 5, en: '4 hours of non-stop improv', de: '4 Stunden Impro am Stück' },
         { title: 'Sunday Open Jam', venue: 'Café Schmalzhaftl', time: '17:00', endTime: '19:00', type: 'jam', lang: 'en', beg: true, day: 6, en: 'Relaxed Sunday jam', de: 'Entspannter Sonntag-Jam' },
       ],
       3: [
-        { title: 'Monday Night Jam', venue: 'TAG Theater', time: '19:00', endTime: '21:00', type: 'jam', lang: 'de', beg: true, day: 0, en: 'Open jam — all levels', de: 'Offener Jam — alle Levels' },
+        { title: 'Monday Night Jam', venue: 'Löblich - Das Theater am Alsergrund', time: '19:00', endTime: '21:00', type: 'jam', lang: 'de', beg: true, day: 0, en: 'Open jam — all levels', de: 'Offener Jam — alle Levels' },
         { title: 'Clown & Impro Workshop', venue: 'Impro Studio', time: '17:00', endTime: '19:30', type: 'workshop', lang: 'de', beg: true, day: 1, en: 'Where clown meets improv', de: 'Wo Clownerie auf Impro trifft' },
         { title: 'English Improv Jam', venue: 'Improtheater Wien', time: '20:00', endTime: '22:00', type: 'jam', lang: 'en', beg: true, day: 2, en: 'The weekly English jam (moved to Wed)', de: 'Der wöchentliche englische Jam (auf Mi verschoben)' },
         { title: 'Improv Comedy Night', venue: 'Café Schmalzhaftl', time: '20:30', endTime: '22:00', type: 'show', lang: 'de', beg: false, day: 3, en: 'Fully improvised comedy', de: 'Improvisierte Comedy-Show' },
-        { title: 'Bühnenfieber: Musical', venue: 'TAG Theater', time: '20:00', endTime: '22:00', type: 'show', lang: 'de', beg: false, day: 4, en: 'Fully improvised musical', de: 'Komplett improvisiertes Musical' },
+        { title: 'Bühnenfieber: Musical', venue: 'Löblich - Das Theater am Alsergrund', time: '20:00', endTime: '22:00', type: 'show', lang: 'de', beg: false, day: 4, en: 'Fully improvised musical', de: 'Komplett improvisiertes Musical' },
         { title: 'Anfänger-Workshop', venue: 'Die Bühne', time: '14:00', endTime: '17:00', type: 'workshop', lang: 'de', beg: true, day: 5, en: 'Beginner workshop — no experience needed', de: 'Anfänger-Workshop — ohne Vorkenntnisse' },
-        { title: 'Saturday Night Showdown', venue: 'TAG Theater', time: '20:00', endTime: '22:00', type: 'show', lang: 'de', beg: false, day: 5, en: 'Two teams battle on stage', de: 'Zwei Teams battlen auf der Bühne' },
-        { title: 'Impro-Krimi', venue: 'TAG Theater', time: '19:30', endTime: '21:00', type: 'show', lang: 'de', beg: false, day: 6, en: 'Improvised crime mystery', de: 'Improvisierter Krimi' },
+        { title: 'Saturday Night Showdown', venue: 'Löblich - Das Theater am Alsergrund', time: '20:00', endTime: '22:00', type: 'show', lang: 'de', beg: false, day: 5, en: 'Two teams battle on stage', de: 'Zwei Teams battlen auf der Bühne' },
+        { title: 'Impro-Krimi', venue: 'Löblich - Das Theater am Alsergrund', time: '19:30', endTime: '21:00', type: 'show', lang: 'de', beg: false, day: 6, en: 'Improvised crime mystery', de: 'Improvisierter Krimi' },
         { title: 'Sunday Open Jam', venue: 'Café Schmalzhaftl', time: '17:00', endTime: '19:00', type: 'jam', lang: 'en', beg: true, day: 6, en: 'Relaxed Sunday jam', de: 'Entspannter Sonntag-Jam' },
       ],
     };
@@ -2132,6 +2163,12 @@
             '<div class="room-card-equipment">' +
               equip.map(e => '<span class="room-equip-tag">' + e + '</span>').join('') +
             '</div>' +
+            (room.phone || room.email ? '<div class="room-card-contact">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>' +
+              (room.phone ? '<a href="tel:' + room.phone.replace(/\s/g, '') + '">' + room.phone + '</a>' : '') +
+              (room.phone && room.email ? '<span class="room-card-contact-sep">·</span>' : '') +
+              (room.email ? '<a href="mailto:' + room.email + '">' + room.email + '</a>' : '') +
+            '</div>' : '') +
           '</div>' +
         '</div>';
       }).join('');
