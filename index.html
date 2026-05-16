@@ -1,0 +1,2257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPONTAN — Improv in Vienna</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #F5F3EE;
+      --bg2: #ECEAE4;
+      --card: #FFFFFF;
+      --text: #000000;
+      --text2: #000000;
+      --text3: #000000;
+      --accent: #DA5A40;
+      --accent-soft: #FDF0ED;
+      --teal: #419268;
+      --teal-soft: #E9F8F1;
+      --purple: #5E45C6;
+      --purple-soft: #EFECFD;
+      --amber: #B57210;
+      --amber-soft: #FDF5E5;
+      --border: rgba(0, 0, 0, 0.2);
+      --border-h: rgba(0, 0, 0, 0.35);
+      --shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.07);
+    }
+
+    [data-theme="dark"] {
+      --bg: #151413;
+      --bg2: #1F1E1C;
+      --card: #262523;
+      --text: #FFFFFF;
+      --text2: #FFFFFF;
+      --text3: #FFFFFF;
+      --accent: #E8765F;
+      --accent-soft: #2D1B16;
+      --teal: #5DB88A;
+      --teal-soft: #112B20;
+      --purple: #9B8AEE;
+      --purple-soft: #1E1836;
+      --amber: #E5A84A;
+      --amber-soft: #2A2010;
+      --border: rgba(255, 255, 255, 0.25);
+      --border-h: rgba(255, 255, 255, 0.4);
+      --shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    html {
+      background: var(--bg);
+      transition: background 0.2s;
+      overflow-y: scroll;
+      scrollbar-gutter: stable;
+    }
+
+    body {
+      font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      background: var(--bg);
+      transition: background 0.2s, color 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 3rem 0 0.75rem;
+    }
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .hero-left {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .hero-wordmark {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 60px;
+      font-variation-settings: 'wdth' 75;
+      letter-spacing: -1px;
+      line-height: 1;
+      color: var(--text);
+    }
+    .hero-tagline {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 18px;
+      font-style: italic;
+      color: var(--text2);
+      margin-top: -4px;
+      align-self: flex-end;
+    }
+    .hero-city {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+
+    /* ── UTILITY BAR ── */
+    .util-bar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    /* Theme toggle */
+    .theme-toggle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--border-h);
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: var(--text2);
+      transition: all 0.15s;
+      line-height: 1;
+    }
+    .theme-toggle:hover {
+      border-color: var(--text3);
+      color: var(--text);
+    }
+
+    /* Language toggle */
+    .lang-toggle {
+      display: flex;
+      height: 32px;
+      border: 1px solid var(--border-h);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .lang-btn {
+      padding: 0 10px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--text3);
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.12s;
+      letter-spacing: 0.5px;
+    }
+    .lang-btn.active {
+      background: var(--text);
+      color: var(--bg);
+    }
+
+    /* ── PRIMARY NAV ── */
+    .sticky-nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--bg);
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+    .nav-scroll-wrap {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+    .nav-scroll-wrap::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 32px;
+      background: linear-gradient(to right, transparent, var(--bg));
+      pointer-events: none;
+      z-index: 1;
+    }
+    .primary-nav {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding-right: 24px;
+    }
+    .primary-nav::-webkit-scrollbar { display: none; }
+    .nav-tab {
+      padding: 8px 18px 10px;
+      font-size: 14px;
+      font-weight: 400;
+      border: none;
+      background: none;
+      color: var(--text);
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      position: relative;
+      transition: color 0.12s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    /* Reserve bold width to prevent layout shift */
+    .nav-tab::before {
+      content: attr(data-label);
+      font-weight: 700;
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
+      display: block;
+      pointer-events: none;
+    }
+    .nav-tab.active {
+      color: var(--text);
+      font-weight: 700;
+    }
+    .nav-tab.active::after {
+      content: '';
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 0;
+      height: 2.5px;
+      border-radius: 2px;
+    }
+    .nav-tab[data-page="events"].active::after { background: var(--accent); }
+    .nav-tab[data-page="news"].active::after { background: var(--purple); }
+    .nav-tab[data-page="rooms"].active::after { background: var(--teal); }
+    .nav-tab:hover:not(.active) {
+      color: var(--text2);
+    }
+
+    /* ── PLACEHOLDER PAGES ── */
+    .placeholder-page {
+      text-align: center;
+      padding: 4rem 1rem;
+    }
+    .placeholder-icon {
+      color: var(--text3);
+      margin-bottom: 16px;
+    }
+    .placeholder-page h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .placeholder-page p {
+      font-size: 15px;
+      color: var(--text2);
+    }
+
+    /* ── NEWS CARDS ── */
+    .news-card {
+      background: var(--card);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .news-card-image {
+      width: 100%;
+      height: 225px;
+      background-size: cover;
+      background-position: center;
+      background-color: var(--bg2);
+    }
+    .news-card-body {
+      padding: 16px 20px 18px;
+    }
+    .news-card-source {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text3);
+      margin-bottom: 8px;
+    }
+    .news-card-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.3px;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .news-card-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text2);
+    }
+    .news-card-date {
+      font-size: 12px;
+      color: var(--text3);
+      margin-top: 10px;
+    }
+
+    /* ── ROOM CARDS ── */
+    .room-card {
+      background: var(--card);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .room-card-image {
+      width: 100%;
+      height: 180px;
+      background-size: cover;
+      background-position: center;
+      background-color: var(--bg2);
+    }
+    .room-card-body {
+      padding: 16px 20px 18px;
+    }
+    .room-card-name {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.3px;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .room-card-address {
+      font-size: 13px;
+      color: var(--text3);
+      margin-bottom: 10px;
+    }
+    .room-card-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+    .room-detail-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text2);
+    }
+    .room-detail-chip svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      color: var(--text3);
+    }
+    .room-card-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text2);
+    }
+    .room-card-equipment {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 10px;
+    }
+    .room-equip-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--bg2);
+      color: var(--text3);
+    }
+
+    /* ── LOAD MORE / PAST BUTTONS ── */
+
+    .events-nav-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text2);
+      cursor: pointer;
+      transition: all 0.12s;
+      margin-bottom: 16px;
+    }
+    .events-nav-btn:hover {
+      background: var(--bg2);
+      color: var(--text);
+    }
+
+    /* ── FILTERS ── */
+    .filters-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 0;
+    }
+    .filters {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+    .beginner-toggle {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-shrink: 0;
+      cursor: pointer;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .beginner-toggle-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text2);
+      white-space: nowrap;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .beginner-toggle-track {
+      width: 36px;
+      height: 20px;
+      border-radius: 10px;
+      background: var(--border-h);
+      position: relative;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    .beginner-toggle.active .beginner-toggle-track {
+      background: #9A907D;
+    }
+    .beginner-toggle-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.15s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .beginner-toggle.active .beginner-toggle-thumb {
+      transform: translateX(16px);
+    }
+    .filter-chip {
+      padding: 5px 13px;
+      border-radius: 6px;
+      border: 1px solid var(--border-h);
+      background: transparent;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text2);
+      transition: all 0.12s;
+    }
+    .filter-chip:hover:not(.active) {
+      border-color: var(--text3);
+      color: var(--text);
+    }
+    .filter-chip.active {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+      font-weight: 700;
+    }
+
+    /* ── DAY SECTIONS ── */
+    .day-section {
+      margin-bottom: calc(1.75rem + 4px);
+    }
+    .day-header {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text3);
+      margin-bottom: 8px;
+      padding-left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .today-pill {
+      font-size: 9px;
+      font-weight: 700;
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--text);
+      padding: 1px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    /* ── EVENT CARDS ── */
+    .event-card {
+      background: var(--card);
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.12s;
+      display: flex;
+      align-items: stretch;
+      overflow: hidden;
+    }
+    .event-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-1px);
+    }
+
+    .card-accent {
+      display: none;
+    }
+
+    .card-body {
+      flex: 1;
+      padding: 13px 16px 13px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .card-time {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      line-height: 1.3;
+      min-width: 48px;
+      padding-top: 1px;
+      color: var(--text);
+    }
+
+    .card-info { flex: 1; }
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+    .card-venue {
+      font-size: 14px;
+      color: var(--text2);
+      margin-bottom: 10px;
+    }
+    .card-tags {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .card-chevron {
+      display: flex;
+      align-items: center;
+      align-self: center;
+      flex-shrink: 0;
+      padding-right: 4px;
+      color: var(--text3);
+      opacity: 0.4;
+      transition: opacity 0.12s;
+    }
+    .event-card:hover .card-chevron {
+      opacity: 0.7;
+    }
+
+    .tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+    .tag-jam { background: var(--accent); color: #fff; }
+    .tag-show { background: var(--teal); color: #fff; }
+    .tag-workshop { background: var(--purple); color: #fff; }
+    .tag-festival { background: var(--amber); color: #fff; }
+    .tag-lang { background: var(--text); color: var(--bg); }
+    .tag-beg { background: #9A907D; color: #fff; }
+
+    /* ── NEW TO IMPROV BANNER ── */
+    .newbie-banner {
+      background: var(--card);
+      border-radius: 10px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: all 0.12s;
+      display: flex;
+      align-items: stretch;
+      overflow: hidden;
+      position: relative;
+    }
+    .newbie-banner:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-1px);
+    }
+    .newbie-banner-illust {
+      width: 138px;
+      min-height: 125px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--card);
+      padding: 8px;
+      overflow: hidden;
+    }
+    .newbie-banner-illust svg {
+      width: 100px;
+      height: auto;
+    }
+    .newbie-banner-body {
+      flex: 1;
+      padding: 16px 40px 16px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .newbie-banner-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      line-height: 1.25;
+      letter-spacing: -0.3px;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .newbie-banner-sub {
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.45;
+    }
+    .newbie-banner-close {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text3);
+      transition: all 0.12s;
+    }
+    .newbie-banner-close:hover {
+      background: var(--bg2);
+      color: var(--text);
+    }
+
+    /* ── NEWSLETTER SIGNUP ── */
+    .newsletter-card {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 24px;
+      text-align: center;
+      margin: 0.5rem 0;
+    }
+    .newsletter-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: -0.3px;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .newsletter-sub {
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .newsletter-form {
+      display: flex;
+      gap: 8px;
+      max-width: 380px;
+      margin: 0 auto;
+    }
+    .newsletter-input {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border-h);
+      background: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.12s;
+    }
+    .newsletter-input::placeholder {
+      color: var(--text3);
+    }
+    .newsletter-input:focus {
+      border-color: var(--purple);
+    }
+    .newsletter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      background: var(--text);
+      color: var(--bg);
+      border: none;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.12s;
+      white-space: nowrap;
+    }
+    .newsletter-btn:hover {
+      opacity: 0.85;
+    }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text3);
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-style: italic;
+      font-size: 18px;
+    }
+
+    /* ── PARTNERS ── */
+    .partners-section {
+      text-align: center;
+      padding: 2rem 0 1rem;
+    }
+    .partners-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text3);
+      margin-bottom: 20px;
+    }
+    .partners-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+    .partner-logo {
+      display: block;
+      color: var(--text);
+      opacity: 0.35;
+      transition: opacity 0.15s;
+      text-decoration: none;
+    }
+    .partner-logo:hover {
+      opacity: 0.6;
+    }
+    .partner-logo svg {
+      height: 58px;
+      width: auto;
+    }
+
+    /* ── FOOTER ── */
+    .footer-cta {
+      text-align: center;
+      padding: 2.5rem 0 2rem;
+      margin-top: 1rem;
+    }
+    .footer-cta p {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-style: italic;
+      color: var(--text2);
+      font-size: 19px;
+      margin-bottom: 14px;
+    }
+    .submit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 22px;
+      background: var(--text);
+      color: var(--bg);
+      border: none;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .submit-btn:hover {
+      opacity: 0.85;
+    }
+    .submit-btn svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    /* ── SITE FOOTER ── */
+    .site-footer {
+      background: #1A1918;
+      color: #fff;
+      margin-top: 2rem;
+    }
+    [data-theme="dark"] .site-footer {
+      background: #1F1E1C;
+    }
+    .footer-inner {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 2.5rem 20px 2rem;
+    }
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+    }
+    .footer-wordmark {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 28px;
+      font-variation-settings: 'wdth' 75;
+      letter-spacing: -0.5px;
+      line-height: 1;
+      color: #fff;
+    }
+    .footer-tagline {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-style: italic;
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 2px;
+    }
+    .footer-social {
+      display: flex;
+      gap: 12px;
+    }
+    .social-link {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.6);
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+    .social-link:hover {
+      color: #fff;
+      border-color: rgba(255,255,255,0.5);
+    }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding-top: 0;
+    }
+    .footer-links a {
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      font-family: 'DM Sans', sans-serif;
+      transition: color 0.12s;
+    }
+    .footer-links a:hover {
+      color: rgba(255,255,255,0.8);
+    }
+    .footer-dot {
+      color: rgba(255,255,255,0.25);
+      font-size: 12px;
+    }
+
+    /* ── PAGES ── */
+    .page { display: none; }
+    .page.active { display: block; padding-top: 20px; }
+
+    .section-label {
+      font-size: 12px;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    /* ── GROUPS ── */
+    .group-card {
+      background: var(--card);
+      border: none;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .group-card:hover {
+      box-shadow: var(--shadow-hover);
+    }
+    .group-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .group-info h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .group-info p {
+      font-size: 14px;
+      color: var(--text2);
+    }
+
+    /* ── BEGINNER GUIDE ── */
+    .guide-step {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+      align-items: start;
+      position: relative;
+    }
+    .guide-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 21px;
+      top: 50px;
+      bottom: -18px;
+      width: 1px;
+      background: var(--border-h);
+    }
+    .step-num {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      background: var(--bg2);
+      color: var(--text3);
+    }
+    .step-content h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      padding-top: 2px;
+    }
+    .step-content p {
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+
+    /* ── BURGER MENU ── */
+    .burger-btn {
+      height: 32px;
+      padding: 0 12px;
+      border-radius: 16px;
+      border: 1px solid var(--border-h);
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: var(--text2);
+      transition: all 0.15s;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .burger-btn:hover {
+      border-color: var(--text3);
+      color: var(--text);
+    }
+
+    .menu-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 99;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    .menu-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .slide-menu {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(320px, 85vw);
+      background: var(--bg);
+      z-index: 100;
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+    }
+    .slide-menu.open {
+      transform: translateX(0);
+    }
+
+    .slide-menu-header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 24px;
+    }
+    .slide-menu-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border-h);
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text2);
+      transition: all 0.15s;
+    }
+    .slide-menu-close:hover {
+      border-color: var(--text3);
+      color: var(--text);
+    }
+
+    .slide-menu-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .slide-menu-item {
+      padding: 14px 16px;
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 26px;
+      font-weight: 400;
+      font-style: italic;
+      border: none;
+      background: none;
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+      border-radius: 10px;
+      transition: background 0.12s;
+    }
+    .slide-menu-item:hover {
+      background: var(--bg2);
+    }
+    .slide-menu-item.active {
+      background: var(--bg2);
+    }
+
+    /* ── EVENT DETAIL PAGE ── */
+    .detail-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text2);
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: 'DM Sans', sans-serif;
+      padding: 4px 0;
+      margin-bottom: 20px;
+      transition: color 0.12s;
+    }
+    .detail-back:hover {
+      color: var(--text);
+    }
+
+    .detail-type-bar {
+      display: none;
+    }
+
+    .detail-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 28px;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .detail-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .detail-meta-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 15px;
+      color: var(--text2);
+    }
+    .detail-meta-row svg {
+      flex-shrink: 0;
+      margin-top: 2px;
+      color: var(--text3);
+    }
+
+    .detail-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .detail-tags .tag {
+      font-size: 12px;
+      padding: 3px 10px;
+    }
+
+    .detail-description {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text2);
+      margin-bottom: 28px;
+    }
+
+    .cal-popover {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 0;
+      background: var(--card);
+      border: 1px solid var(--border-h);
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      z-index: 20;
+      min-width: 200px;
+      overflow: hidden;
+    }
+    [data-theme="dark"] .cal-popover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .cal-popover-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      text-decoration: none;
+      border: none;
+      background: none;
+      width: 100%;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .cal-popover-item:hover {
+      background: var(--bg2);
+    }
+    .cal-popover-item + .cal-popover-item {
+      border-top: 1px solid var(--border);
+    }
+
+    .detail-map {
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 28px;
+      border: 1px solid var(--border);
+    }
+    .detail-map iframe {
+      display: block;
+      width: 100%;
+      height: 200px;
+      border: none;
+    }
+
+    .detail-section-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text3);
+      margin-bottom: 12px;
+    }
+
+    .detail-performers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 28px;
+    }
+    .detail-performer {
+      font-size: 14px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 16px;
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .detail-credits {
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .detail-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .detail-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.12s;
+      text-decoration: none;
+    }
+    .detail-action-primary {
+      background: var(--text);
+      color: var(--bg);
+      border: none;
+    }
+    .detail-action-primary:hover { opacity: 0.85; }
+    .detail-action-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border-h);
+    }
+    .detail-action-secondary:hover {
+      border-color: var(--text3);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-top">
+        <div class="hero-left">
+          <div class="hero-wordmark" onclick="goHome()" style="cursor:pointer">spontan</div>
+          <div class="hero-tagline" id="hero-tagline">Find your scene.</div>
+        </div>
+        <div class="hero-city" id="hero-city">Improv in Vienna</div>
+      </div>
+    </div>
+
+    <!-- UTILITY BAR -->
+    <div class="util-bar">
+      <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" onclick="setLang('de')">DE</button>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode">
+        <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <button class="burger-btn" onclick="toggleMenu()" title="Menu" id="burger-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <span id="burger-label">Menu</span>
+      </button>
+    </div>
+
+    <!-- SLIDE-IN MENU -->
+    <div class="menu-overlay" id="menu-overlay" onclick="toggleMenu()"></div>
+    <div class="slide-menu" id="slide-menu">
+      <div class="slide-menu-header">
+        <button class="slide-menu-close" onclick="toggleMenu()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <nav class="slide-menu-nav">
+        <button class="slide-menu-item" onclick="goHome()" id="menu-events">Events</button>
+        <button class="slide-menu-item" onclick="showMenuPage('news')" id="menu-news">News</button>
+        <button class="slide-menu-item" onclick="showMenuPage('rooms')" id="menu-rooms">Rooms</button>
+        <button class="slide-menu-item" onclick="showMenuPage('begin')" id="menu-begin">Start improv</button>
+      </nav>
+    </div>
+
+    <!-- STICKY NAV -->
+    <div class="sticky-nav">
+      <div class="nav-scroll-wrap">
+        <nav class="primary-nav">
+          <button class="nav-tab active" data-page="events" data-label="Events" onclick="showTab('events')" id="nav-events">Events</button>
+          <button class="nav-tab" data-page="news" data-label="News" onclick="showTab('news')" id="nav-news">News</button>
+          <button class="nav-tab" data-page="rooms" data-label="Rooms" onclick="showTab('rooms')" id="nav-rooms">Rooms</button>
+        </nav>
+      </div>
+      <div class="filters-row" id="filters-row">
+        <div class="filters" id="filters"></div>
+        <div class="beginner-toggle" id="beginner-toggle" onclick="toggleBeginner()">
+          <span class="beginner-toggle-label" id="beginner-toggle-label">Beginner</span>
+          <div class="beginner-toggle-track"><div class="beginner-toggle-thumb"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EVENTS PAGE -->
+    <div class="page active" id="page-events">
+      <div id="events-container"></div>
+    </div>
+
+    <!-- NEWS PAGE -->
+    <div class="page" id="page-news">
+      <div id="news-container"></div>
+    </div>
+
+    <!-- ROOMS PAGE -->
+    <div class="page" id="page-rooms">
+      <div id="rooms-container"></div>
+    </div>
+
+    <!-- BEGINNER PAGE -->
+    <div class="page" id="page-begin">
+      <div id="begin-container"></div>
+    </div>
+
+    <!-- EVENT DETAIL PAGE -->
+    <div class="page" id="page-detail">
+      <div id="detail-container"></div>
+    </div>
+
+    <!-- FOOTER CTA (events only) -->
+    <div class="footer-cta" id="footer-cta">
+      <p id="footer-text">Know about an event we're missing?</p>
+      <button class="submit-btn" id="footer-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span id="footer-btn-text">Submit an event</span>
+      </button>
+    </div>
+
+    <!-- NEWSLETTER SIGNUP -->
+    <div class="newsletter-card" id="newsletter-card">
+      <div class="newsletter-title" id="newsletter-title">Stay in the loop</div>
+      <div class="newsletter-sub" id="newsletter-sub">Get weekly improv events and community news delivered to your inbox.</div>
+      <div class="newsletter-form">
+        <input type="email" class="newsletter-input" id="newsletter-input" placeholder="your@email.com">
+        <button class="newsletter-btn" id="newsletter-btn" onclick="subscribeNewsletter()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <span id="newsletter-btn-text">Subscribe</span>
+        </button>
+      </div>
+    </div>
+
+    </div>
+
+    <!-- PARTNERS -->
+    <div class="partners-section">
+      <div class="partners-label" id="partners-label">Featuring</div>
+      <div class="partners-logos">
+        <a href="#" class="partner-logo" title="Vienna Improv">
+          <svg viewBox="0 0 327.04 190.44" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M96.87,190.44h-14.3c-.88-.34-1.8-.22-2.75-.28-6.62-.44-13.05-1.16-19.56-2.57-18.27-3.95-36.98-12.67-45.1-30.55-7.04-15.51-3.55-32.57,3.6-47.32,2.17-4.48,4.65-8.6,7.34-12.75.76-1.18,1.98-1.65,3.36-1.15,2.23.82,4.01,2.69,4.87,4.87.57,1.46-.1,2.36-.84,3.47-2.65,3.94-4.81,8.14-6.91,12.39-.57,1.15-.82,2.26-1.27,3.43-3.99,10.47-5.76,21.99-1.07,32.53,6.78,15.22,24.48,22.44,39.84,25.42,22.57,4.37,49.21,1.95,71.48-3.36,7.52-1.79,14.95-3.49,22.17-6.24l24.22-9.23,21.36-10.15c1.96-.93,3.73-1.89,5.55-2.98,1.23-.74,2.42-1.23,3.93-.66,2.13.81,3.86,2.73,4.36,4.95.39,1.72-.33,2.89-1.76,3.7-13.71,7.79-27.92,14.51-42.73,20.08-10.41,3.91-21.04,7.13-31.83,9.83-14.57,3.64-29.19,5.58-43.96,6.58Z"/><path d="M281.02,29.91c-10.83-12.57-30.44-17.55-46.41-19-27.3-2.47-56.09,2.79-82.04,11.18l-24.33,9.29-14.05,6.28c-.77.34-1.43.51-2.29.27-2.46-.69-4.71-2.32-5.73-4.68-.66-1.53-.05-3.12,1.36-3.83l4.72-2.37,20.55-8.64c16.59-6.98,39.69-13.19,57.53-15.92,8.12-1.24,16.04-2.03,24.22-2.38,11.72-.49,25.21.42,36.69,3.02,12.5,2.83,24.87,7.77,34.24,16.67,13.36,12.69,16.3,30.07,11.36,47.44-1.69,5.92-4,11.46-6.91,16.85-.99,1.84-5.91.95-8.41-2.5-.71-.97-.64-2.03-.14-3.01,3.16-6.29,5.45-11.59,6.79-18.58,2.09-10.9.2-21.57-7.15-30.1Z"/><g><path d="M130.49,139.76l-10.87-.16-8.17.21-.02-27.45c0-1.27-.8-2.29-1.56-2.91-2.46-1.98-6.54.25-8.57,2.25v18.59s5.7.04,5.7.04v9.46s-12.95-.2-12.95-.2l-12.03.19v-9.57s6.03.06,6.03.06v-22.65s-6.02.1-6.02.1v-9.73s19.25.19,19.25.19c.13,1.34-.13,2.54.13,3.8,4.49-4.57,11.13-5.98,16.94-3.65,2.18.87,3.73,2.45,4.86,4.49,4.4-3.76,8.99-6.21,14.8-5.45,3.58.47,6.9,2.34,8.5,5.63.89,1.83,1.09,3.86,1.1,5.93l.09,21.33,6.02.1v9.42s-10.52-.19-10.52-.19l-8.59.21-.04-27.84c0-.91-.65-1.86-1.2-2.41-2.04-2.02-7.05.28-8.68,2.38v18.35s5.79.05,5.79.05l.02,9.43Z"/><path d="M164.63,157.37l-13.05.29v-9.51s6.1-.05,6.1-.05v-40.6s-5.87.23-5.87.23v-9.71s9.5.21,9.5.21l9.45-.21.03,4.71,2.72-2.77c3.12-3.18,13.58-4.97,19.95,2.18,2.46,2.75,4.08,5.96,4.92,9.58,1.93,8.34.54,18.35-5.82,24.56-4.05,4.07-9.79,5.28-15.24,3.49-2.65-.87-4.65-2.6-6.52-4.82v13.16s5.69.04,5.69.04v9.51s-11.85-.29-11.85-.29ZM177.5,129.68c5.08.42,7.39-3.89,7.97-8.07.52-3.79.28-8.86-2.56-11.73-1.58-1.6-3.82-2.04-6.11-1.55-1.78.38-3.37,1.79-4.4,3.65-2.76,4.99-2.69,17.06,5.1,17.71Z"/></g><g><path d="M141.83,76.59l5.63.2v9.46s-12.13-.2-12.13-.2l-12.47.19v-9.58s5.87.06,5.87.06v-22.61s-5.83.09-5.83.09l-.04-9.71,18.92.15.12,3.72,3.21-2.37c3.86-2.85,9.28-3.19,13.74-1.31,3.28,1.39,5.4,4.32,5.99,7.72.3,1.7.43,3.24.43,4.99l.02,19.18,5.7.2v9.45s-10.9-.19-10.9-.19l-8.03.19-.09-27.62c0-2.59-2.99-3.77-5.16-3.1-1.91.59-3.41,1.54-4.99,2.75v18.31Z"/><path d="M193.93,76.6l5.62.19.02,9.47-12.09-.2-12.52.2v-9.59s5.88.08,5.88.08l-.02-22.66-5.85.11v-9.7s18.94.16,18.94.16l.05,3.74,3.17-2.34c3.91-2.88,9.39-3.27,13.9-1.33,3.26,1.4,5.34,4.34,5.93,7.72.31,1.75.41,3.35.41,5.15l.02,18.97,5.7.2.02,9.45-10.86-.19-8.09.19-.09-27.59c0-2.6-2.96-3.81-5.16-3.13-1.9.59-3.38,1.53-4.99,2.74v18.33Z"/><path d="M250.55,82.48c-3.84,3.74-8.95,5.31-14.25,4.42-6.26-1.05-10.72-6.21-10.79-12.6-.03-2.71.47-5.26,2-7.52,5.07-7.52,15.35-7.81,23.09-4.16.11-1.31.08-2.69,0-4.04-.14-3.42-2.79-5.68-6.12-5.89s-6.4,1.22-7.82,4.38l-11.36-1.83c.97-2.22,2.05-4.19,3.7-5.88,5.7-4.86,12.75-6.23,20.11-5.41,3.56.39,6.85,1.47,9.77,3.49,3.87,2.68,4.76,7.06,4.77,11.6l.03,17.71,5.85-.09.02,9.59-9.36-.18-9.48.2-.15-3.77ZM250.71,74.51l-.04-3.71c-2.19-1.45-4.68-2.49-7.34-2.46-2.91.04-4.99,2.11-5.05,4.97-.03,1.61.66,3,1.81,3.93,3.21,2.59,7.98-.14,10.62-2.72Z"/><path d="M109.56,72.56l10.92,3.46c-4.28,7.64-11.48,11.37-19.94,11.28-4.42-.05-8.64-1.04-12.28-3.63-7.37-5.24-9.32-14.57-7.69-23.08,1.14-5.95,4.6-11.2,9.83-14.3,4.29-2.54,9.35-3.21,14.26-2.26s9.18,3.89,12.21,7.85c3.92,5.06,3.71,10.94,3.71,17.08l-28.14.02c0,3.57,1.81,6.79,5.04,8.17s7.14.65,9.95-1.54c.87-.89,1.48-1.71,2.15-3.05ZM107.62,61.29c-.07-1.56-.37-2.55-.73-3.69-.92-2.62-3.24-4.25-5.99-4.43-4.76-.3-8.16,3.42-8.43,8.13l15.14-.02Z"/></g><g><path d="M327.04,98.21v9.55l-5.64-.17-12.93,32.23h-12.22s-13-32.23-13-32.23l-5.8-.07v-9.54s24.89.2,24.89.2v9.54s-4.98-.12-4.98-.12l5.87,17.25.57,3.43c.3-1.77.77-3.41,1.43-5.17l5.85-15.49-4.83-.1v-9.53s20.79.21,20.79.21Z"/><g><path d="M265.54,139.3c-5.13,2.02-10.74,2.04-15.8.16-6.89-2.56-11.74-8.73-13-15.9-.57-3.27-.54-6.37.09-9.62,1.36-7.04,6.2-13.09,13.03-15.51,4.8-1.7,10.07-1.73,14.89-.1,7.55,2.55,12.78,9.43,13.71,17.25.26,2.18.29,4.04.06,6.26-.82,7.68-5.61,14.56-12.97,17.46ZM258.39,130.24c7.16-.93,7.69-13.29,5.05-18.74-1.01-2.08-2.76-3.54-4.79-3.83-2.29-.34-4.47.29-5.95,2.02-2.92,3.39-3.13,9.13-2.38,13.31s3.56,7.83,8.07,7.25Z"/><path d="M201.19,139.81v-9.61s6.41.08,6.41.08v-22.69s-6.41.16-6.41.16v-9.75s18.61.2,18.61.2l.11,10.04c.99-1.7,1.66-3.3,2.79-4.82,3.26-4.4,6.86-6.36,12.46-6.14l-.02,13.17c-5.86-.66-10.51,1.64-12.97,6.79-.94,2.09-1.4,4.26-1.39,6.57v6.33s7.4.18,7.4.18v9.48s-13.5-.21-13.5-.21l-13.49.21Z"/></g></g><g><path d="M32.68,39.15v-9.31s11.83.3,11.83.3l11.08-.19v9.36s-5.89-.1-5.89-.1l-15.86,47.06h-11.7S5.92,39.26,5.92,39.26l-5.89-.09-.03-9.34,14.1.32,13.23-.19v9.34s-6.1-.05-6.1-.05l7.12,24.19c.68,2.3,1.12,4.41,1.55,6.68.19-2.06.43-3.83,1.04-5.79l7.88-25.25-6.15.07Z"/><g><polygon points="66.16 139.6 52.88 139.8 52.87 130.35 59.59 130.5 59.78 54.14 53.47 54.24 53.47 44.46 72.94 44.57 72.99 130.26 79.08 130.58 79.11 139.79 66.16 139.6"/><path d="M73,37.52c-3.25,2.32-7.79,2.27-10.99.02-1.27-.89-1.97-2.24-2.01-3.59-.05-1.47.63-2.79,1.82-3.76,3.3-2.68,9.5-2.57,12.19.89,1.62,2.07,1.24,4.82-1.02,6.44Z"/></g></g></svg>
+        </a>
+        <a href="#" class="partner-logo" title="The IICV">
+          <svg viewBox="0 0 299.33 249.56" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g><path d="M217.31,202.63c18.72-3.66,34.32-10.44,46.91-25.12,6.97-8.13,12.6-17.17,17-26.93,1.83-4.06,3.09-8.01,3.99-12.31,3.8-18.06-6.42-34.19-19.46-45.77-29.51-26.21-69.17-39.6-108.49-39.94-19.82-.17-43.41,3.42-61.59,11.53-10.37,4.63-19.47,11.28-27.45,19.41-9.66,9.84-17.76,21.04-24.05,33.3-7.59,14.79-10.22,32.35-.54,46.81,4.38,6.55,9.79,11.3,13.77,17.93,1.18,1.96,1.95,4.1,2.17,6.35.26,2.61-1.17,4.73-3.73,5.4-7.6,1.98-15.28-3.06-20.45-8.28-20.4-20.58-21.09-50.74-7.41-75.32,5.87-10.55,13.11-20.02,21.37-28.81,13.56-14.43,31.45-26.27,50.4-32.07,13.28-4.06,35.49-7.55,49.46-8.69,5.2-.42,9.98-.38,15.2-.08,13.14.76,25.98,2.15,38.97,4.11,2.78.42,5.26.77,7.95,1.53,16.04,4.54,31.4,10.82,45.54,19.76,14.1,8.92,28.58,22.2,36.09,37.34,4.24,8.53,6.68,17.81,6.3,27.47-.4,10.36-3.5,20.15-8.39,29.19-4.31,7.97-9.11,15.34-14.63,22.49-15.76,20.39-37.02,28.5-61.01,35.13-7.56,2.09-14.99,3.26-22.78,4.37-12.9,1.83-25.57,3.1-38.63,3.28-8.83.12-17.22-.6-25.98-1.38-11.6-1.04-25.56-2.33-35.61-8.37-3.16-1.9-5.92-4.25-7.77-7.32s-.65-6.78,2.65-8.27c2.57-1.16,5.26-1.67,8.18-1.59,18.24.5,28.69,5.46,44.54,6.95,8.64.81,17,1.12,25.67,1.45,6.03.23,11.68.16,17.74.02,11.52-.26,22.76-1.38,34.04-3.58Z"/><path d="M81.61,228.57c-5.79,2.74-23.99,4.24-34.43,7.68l-20.22,6.65-13.29,4.17c-3.14.99-6.2,1.91-9.45,2.43-1.12.18-2.2.01-2.99-.72-4.26-3.96,3.65-9.38,5.51-11.23,9.03-9.02,16.51-21.58,21.54-33.28,3.17-7.39.17-11.44,5.18-13.32,2.14-.8,4.31-.11,5.53,1.91,3.38,5.59.75,12.96-2.15,18.31-2.29,4.15-4.91,7.84-7.94,11.49l-11.52,13.92c8.53-1.81,16.38-3.69,24.44-5.84,3.04-.81,5.84-1.62,8.76-2.72l15.05-5.7c3.12-1.18,5.94-2.38,8.73-4.19,1.8-1.17,4.1-1.71,6.19-1.14,3.3.89,5.24,4.32,4.53,7.6-.4,1.83-1.75,3.18-3.49,4Z"/><path d="M98.18,89.36c-1.33,1.73-3.92,1.81-5.79.9-4.46-2.15-8.65-8.68-6.2-11.82.65-.83,1.92-1.23,3.11-1.14,3.08.23,5.68,1.84,7.89,3.97s2.98,5.5.99,8.08Z"/><path d="M124.83,87.7c-1.56,1.53-3.97,1.47-5.75.43-3.56-2.07-7.87-7.97-5.9-10.86,2.54-3.73,8.96-1.08,12.04,3.07,1.62,2.19,1.71,5.31-.38,7.36Z"/><g><path d="M197.1,94.28c.19-2.03,1.04-3.63,2.83-4.49,3.03-1.47,6.86-1.53,9.77.32,4.41,2.81,4.34,11.42,4.97,15.34l4.58,28.44c1.19,7.41,3.07,14.4,5.02,21.59.74,2.72,2.05,5.14,4.05,7.07l3.07-17.86c1.88-10.95,4.06-21.6,5.19-32.67l1.36-13.28c.33-3.18,1.15-6.17,2.3-9.12.86-2.21,2.81-3.15,5.07-2.58,3.03.76,4.39,3.23,4.05,6.3l-1.42,12.89-4.57,28.24c-1.5,9.27-3.3,18.16-5.23,27.3-1.41,6.69-2.69,16.03-12.1,15.47-6.71-.4-13.27-4.48-16.06-10.81-5.41-12.31-7.72-29.24-9.43-42.61-.77-6.05-1.64-11.79-2.74-17.78-.71-3.89-1.08-7.71-.71-11.74Z"/><path d="M181.49,136.94c.47-1.82.42-8.33,3.23-8.64s5.5,1.49,6.54,4.29c1.29,3.51,1.37,7.43.25,11.18-2.81,9.46-7.6,18.08-13.86,25.66-2.19,2.65-4.41,4.92-7.24,6.77-4.18,2.74-9.22,3.06-13.73.79-7.76-3.92-12.98-13.35-15.44-21.52-4.33-14.37-4.12-29.79.53-44.03,2.65-8.13,6.79-16.32,15.45-18.86,4.86-1.43,10.13-.41,13.84,3,.71.66.92,1.65.76,2.51-.37,2.03-4.33,2.08-5.71,2.45-5.48,1.44-9.41,7.69-10.76,13.02-2.52,9.97-3.26,20.09-2.48,30.39.43,5.65,1.07,11,2.16,16.49.52,2.61,1.61,5.06,3.41,6.84,1.57,1.56,3.62,1.85,5.5.79,3.93-2.21,8.67-9.49,10.76-13.55,2.88-5.6,5.16-11.32,6.79-17.57Z"/><path d="M129.14,177.57c.33,1.13.57,2.34-.25,3.12-2.36,2.24-5.78,2.18-8.43.26-3.59-2.59-5.49-6.62-6.31-11.02-1.74-9.33-2.92-18.44-3.08-27.97l-.45-26.76c-.08-4.55-.24-8.88.64-13.32.25-1.28,1.28-2.16,2.63-1.93,4.85.85,9.17,3.68,9.62,8.92.31,3.63.33,7.14.19,10.8-.26,6.66-.15,13.02.39,19.72l2.13,26.22c.34,4.16,1.73,7.88,2.93,11.95Z"/><path d="M102.04,179.85c.41.91.55,2.04-.05,2.76-1.96,2.36-5.21,2.7-7.86,1.02-4.04-2.56-6.31-6.94-7.16-11.66-2.52-14.14-3.32-27.59-3.35-42l-.06-25.64c.28-1.24,1.01-2.18,2.34-2.1,5.5.35,9.83,3.47,10.51,9.21.51,4.3.49,8.47.31,12.83-.27,6.68-.25,13.02.17,19.7.58,9.18,1.42,18.07,2.59,27.17.4,3.09,1.26,5.81,2.56,8.71Z"/></g></g><path d="M78.78,40.07l-5.85-15c-.88-2.26-3.13-3.81-5.63-3.36-3,.55-5.49,4.01-4.39,6.97l5.69,15.29-8.99,3.42L42.75,3.49l9.01-3.49,7.91,20.46c1.26-2.31,2.53-4.48,4.86-5.74,5.4-2.92,13.52-2.63,16.38,4.01l6.85,17.88-8.99,3.47Z"/><polygon points="49.07 53.29 40.22 58.56 21.84 27.55 12.59 32.97 8.04 25.18 35.31 9.04 39.91 16.76 30.74 22.31 49.07 53.29"/><path d="M109.83,21.82l7.6,2.11c-1.73,4.95-5.68,8.04-10.49,9.39-6.7,2.3-14.01.25-18.14-5.61-2.16-3.07-3.02-7.03-2.28-10.73,1.43-7.23,7.52-12.1,14.76-12.55,8.76-.55,14.32,4.78,15.38,13.27l-19.9,4.07c.36,2.19,1.73,3.75,3.75,4.27,3.68.95,7.53-.62,9.32-4.22ZM106.3,14.28c-.87-3.05-3.72-3.99-6.4-3.32s-4.54,2.79-3.89,5.43l10.28-2.11Z"/></svg>
+        </a>
+      </div>
+    </div>
+
+  <!-- SITE FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-wordmark" onclick="goHome()" style="cursor:pointer">spontan</div>
+          <div class="footer-tagline" id="footer-tagline">Find your scene.</div>
+        </div>
+        <div class="footer-social">
+          <a href="#" class="social-link" title="Instagram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="#" class="social-link" title="Facebook">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" class="social-link" title="Bluesky">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-2.5 2.5-5 5.5-5 8.5a5 5 0 0 0 10 0c0-3-2.5-6-5-8.5z"/><path d="M8.5 16.5c-1.5.5-3 1-3 2.5 0 1 1 1.5 2.5 1.5 2 0 3-1 4-2.5 1 1.5 2 2.5 4 2.5 1.5 0 2.5-.5 2.5-1.5 0-1.5-1.5-2-3-2.5"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="#">About</a>
+        <span class="footer-dot">·</span>
+        <a href="#">Impressum</a>
+        <span class="footer-dot">·</span>
+        <a href="#">AGB</a>
+        <span class="footer-dot">·</span>
+        <a href="#">Datenschutz</a>
+        <span class="footer-dot">·</span>
+        <a href="#">Cookie Settings</a>
+      </div>
+    </div>
+  </footer>
+
+<script>
+    // ── STATE ──
+    let lang = 'en';
+    let activeFilter = 'all';
+    let visibleDays = 8; // today + 7 more
+    let pastDaysShown = 0;
+    let isDark = false;
+    let menuOpen = false;
+    let activePage = 'events'; // 'events', 'news', 'rooms', 'groups', 'begin', 'detail'
+    let newbieDismissed = false;
+    let beginnerMode = false;
+    try { beginnerMode = localStorage.getItem('spontan-beginner') === 'true'; } catch(e) {}
+
+    const mascotSVG = '<svg width="294" height="274" viewBox="0 0 294 274" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="137" cy="137" r="137" fill="#F5F3EF"/><mask id="mask0_1_123" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="274" height="274"><circle cx="137" cy="137" r="137" fill="#387B58"/></mask><g mask="url(#mask0_1_123)"><path d="M270.342 35.6232L210.533 41.4278L172.482 54.4618L131.084 64.3296C131.084 64.3296 128.908 68.6567 131.698 73.617C132.033 73.0365 169.414 75.0417 169.414 75.0417L198.872 82.8516L202.554 84.5929L214.829 86.6509L223.086 87.4953L230.785 90.6614L268.836 94.9885L271.904 94.6719L277.763 94.0914C277.763 94.0914 288.196 92.9305 292.157 68.2873C293.608 54.0924 287.191 31.7183 270.342 35.5177V35.6232Z" fill="#F47B6A"/><path d="M53.2537 232.452L41.8721 528.223C41.8721 528.223 73.1158 536.613 112.059 526.323C112.449 526.798 135.324 529.912 146.26 525.321C145.813 525.321 166.5 224.5 166.5 224.5L67.7597 222.901L53.2537 232.452Z" fill="#5946BF"/><path d="M87.8446 97.9432L79.2526 108.391C79.2526 108.391 53.4765 115.674 48.9015 142.322C44.3266 168.97 43.9918 230.499 44.3266 231.66C44.6613 232.821 44.6613 238.045 57.2146 242.108C69.7679 246.172 128.071 261.58 167.014 224.114C167.907 222.689 164.28 201.476 164.28 201.476L165.508 199.418L171.645 191.028C171.645 191.028 194.073 205.276 224.09 177.994C254.106 150.712 266.101 135.356 260.299 130.713C260.634 130.132 264.874 125.489 264.595 121.162C264.595 120.317 251.372 112.138 251.372 112.138L237.257 110.397L230.84 113.879L227.158 117.362C227.158 117.362 224.424 119.42 224.09 121.689C223.755 121.689 218.231 115.885 193.739 143.43C194.073 143.747 194.352 139.103 194.352 139.103C194.352 139.103 199.876 121.689 197.421 116.465L200.489 106.597V95.8324C200.489 95.8324 185.76 86.2812 184.868 85.3841C183.975 84.5398 171.087 85.9646 171.087 85.9646L168.018 88.2864L163.443 96.6767C163.443 96.6767 156.413 98.9985 152.731 107.705C152.731 108.022 127.569 104.539 127.569 104.539C127.569 104.539 120.818 95.8324 118.028 96.149C113.063 96.7822 88.012 97.9959 88.012 97.9959L87.8446 97.9432Z" fill="#419268"/><path d="M179.511 50.3987C179.511 50.3987 162.606 49.2378 169.078 88.3925C169.078 89.5534 200.377 106.651 200.377 106.651C200.377 106.651 208.077 101.426 214.772 86.0706C214.437 86.6511 202.497 84.6459 202.497 84.6459C202.497 84.6459 192.678 54.1981 210.755 40.8475C211.089 40.8475 197.867 40.2671 193.85 44.3303C194.742 44.3303 187.099 43.1694 183.751 46.0717C183.528 46.3883 179.511 50.3987 179.511 50.3987Z" fill="#9A907D"/><path d="M221.857 69.8703C221.857 69.8703 229.836 68.1289 231.398 90.7669C231.733 91.0835 268.5 95.4106 268.5 95.4106C268.5 95.4106 270.955 112.244 264.483 121.215C264.148 120.898 238.149 125.014 230.784 113.933C228.943 113.088 212.038 89.2894 221.857 69.8703Z" fill="#9A907D"/><path d="M202.387 85.0147C201.885 85.0147 201.383 84.6454 201.271 84.1704C193.349 49.8705 209.417 40.3193 210.086 39.8971C210.644 39.5805 211.314 39.7916 211.649 40.2665C211.983 40.7942 211.76 41.4274 211.258 41.744C211.258 41.744 207.408 44.0659 204.563 50.2399C201.885 56.0445 199.542 66.5456 203.503 83.6427C203.615 84.2232 203.224 84.8037 202.61 84.962C202.499 84.962 202.443 84.962 202.331 84.962L202.387 85.0147Z" fill="#322E55"/><path d="M189.052 66.7044C188.382 66.7044 187.88 66.2295 187.88 65.5963C187.88 48.7629 193.069 44.1192 193.292 43.9081C193.738 43.5388 194.463 43.5388 194.91 44.0137C195.3 44.4358 195.3 45.1218 194.91 45.544C194.798 45.6495 190.223 50.0821 190.223 65.649C190.223 66.2295 189.721 66.7044 189.052 66.7044Z" fill="#322E55"/><path d="M178.006 69.343C177.392 69.343 176.946 68.9209 176.834 68.3932C175.886 59.528 176.555 52.9846 178.843 49.0269C180.739 45.808 183.083 45.4386 183.362 45.4386C184.031 45.3331 184.533 45.808 184.645 46.3885C184.757 47.0217 184.254 47.4966 183.696 47.6021C183.529 47.6021 177.057 49.0797 179.121 68.1821C179.121 68.8153 178.731 69.2903 178.117 69.343H178.006Z" fill="#322E55"/><path d="M230.451 95.4106C229.781 95.4106 229.279 94.8829 229.279 94.3024C229.558 78.7883 226.378 73.6697 224.481 72.0339C223.309 70.9785 222.305 71.084 222.249 71.084C221.58 71.1896 221.077 70.7674 220.966 70.187C220.854 69.5537 221.356 69.0788 221.914 68.9205C222.082 68.9205 223.867 68.7094 225.82 70.2925C228.554 72.5616 231.79 78.5772 231.511 94.3552C231.511 94.9357 231.009 95.4106 230.339 95.4106H230.451Z" fill="#322E55"/><path d="M194.576 116.73H194.465C170.195 114.091 163.054 101.004 162.775 100.477C162.496 99.9489 162.775 99.3157 163.277 98.9991C163.835 98.7352 164.504 98.9991 164.839 99.474C164.839 99.5795 171.813 112.033 194.799 114.513C195.469 114.619 195.915 115.146 195.804 115.727C195.692 116.36 195.19 116.73 194.632 116.73H194.576Z" fill="#322E55"/><path d="M250.369 133.035C234.245 133.035 223.254 123.484 222.696 123.009C222.249 122.64 222.194 121.901 222.696 121.479C223.086 121.057 223.867 121.004 224.314 121.479C224.425 121.584 239.322 134.513 259.128 129.922C259.742 129.816 260.356 130.133 260.523 130.713C260.69 131.294 260.3 131.874 259.686 132.033C256.45 132.824 253.326 133.141 250.369 133.141V133.035Z" fill="#322E55"/><path d="M166.847 88.1824C167.182 87.6547 167.851 87.4957 168.409 87.7595C168.967 88.0761 169.134 88.7095 168.856 89.2371L164.28 97.0476C164.169 97.3112 163.889 97.4695 163.61 97.575C163.472 97.5848 149.762 102.479 138.169 151.136V151.241C138.169 151.347 133.316 164.012 136.719 171.294C136.998 171.874 136.719 172.455 136.106 172.719C135.994 172.824 135.827 172.824 135.715 172.824L135.659 172.877C135.213 172.877 134.766 172.612 134.599 172.243C132.483 167.762 133.048 161.792 134.019 157.245L79.5323 131.452C78.9744 131.188 78.7514 130.555 79.0304 129.974C79.3093 129.447 79.9792 129.236 80.5929 129.5L134.545 155.039C135.164 152.68 135.787 150.999 135.938 150.608C146.817 104.699 159.762 96.8365 162.44 95.6756L166.847 88.1824Z" fill="#322E55"/><path d="M140.234 209.339C126.732 209.339 110.05 204.326 90.5784 194.458C72.1111 185.065 57.8283 174.511 57.6609 174.406C57.1587 174.036 57.0471 173.35 57.4935 172.875C57.884 172.4 58.6093 172.295 59.1115 172.717C59.6694 173.139 115.629 214.246 150.276 206.067C160.096 203.745 167.349 197.624 171.924 187.862C201.047 132.296 196.751 116.993 196.695 116.834C196.695 116.676 196.695 116.465 196.695 116.254L198.983 107.125C199.094 106.545 199.764 106.175 200.378 106.281C200.991 106.386 201.382 107.019 201.27 107.6L199.039 116.465C199.652 118.998 201.828 135.779 174.044 188.759C169.19 199.154 161.379 205.698 150.89 208.178C147.598 208.917 144.027 209.286 140.289 209.286L140.234 209.339Z" fill="#322E55"/><path d="M104.862 126.756C104.639 126.756 104.416 126.65 104.193 126.597L78.9186 110.08C78.4164 109.711 78.2491 109.078 78.6396 108.55C79.0302 108.075 79.6997 107.917 80.2576 108.286L104.193 123.906L106.089 116.729C106.201 116.466 106.368 116.202 106.647 116.096C106.926 115.991 107.261 115.938 107.54 115.991L122.046 119.579L125.896 104.592C126.007 104.012 126.677 103.643 127.291 103.801C127.904 103.906 128.295 104.54 128.127 105.12L123.999 121.215C123.887 121.531 123.72 121.742 123.441 121.901C123.162 122.006 122.827 122.059 122.548 122.006L108.042 118.365L106.034 125.964C105.922 126.333 105.643 126.597 105.364 126.703C105.253 126.703 105.085 126.808 104.974 126.808L104.862 126.756Z" fill="#322E55"/><path d="M128.35 244.22H128.183C127.514 244.114 127.123 243.586 127.235 242.953C129.02 232.347 125.896 208.284 125.84 208.02C125.728 207.387 126.23 206.912 126.844 206.806C127.514 206.701 128.016 207.176 128.127 207.756C128.239 208.759 131.363 232.399 129.522 243.323C129.411 243.85 128.908 244.22 128.35 244.22Z" fill="#322E55"/><path d="M136.049 251.607C136.161 251.027 136.774 250.658 137.444 250.763C138.057 250.869 138.448 251.449 138.336 252.083C138.225 252.539 136.465 259.935 132.164 266.164C132.277 266.355 132.332 266.579 132.311 266.804L113.676 525.532C113.676 526.112 113.118 526.534 112.504 526.534H112.448C111.779 526.534 111.333 525.954 111.389 525.374L129.847 269.091C128.023 271.082 125.864 272.762 123.328 273.77C123.217 273.77 123.105 273.876 122.938 273.876H122.882C122.436 273.876 121.989 273.612 121.821 273.243C121.598 272.662 121.822 272.082 122.436 271.818C132.199 267.913 135.993 251.818 136.049 251.607Z" fill="#322E55"/><path d="M64.0773 272.451C63.1288 272.451 62.1245 272.451 61.176 272.346C60.5065 272.346 60.0602 271.765 60.116 271.185C60.1718 270.604 60.7297 270.13 61.3434 270.182C71.6092 270.974 80.3686 267.544 87.5658 259.945C92.9219 254.246 95.321 248.178 95.321 248.125C95.5442 247.544 96.2137 247.281 96.7716 247.492C97.3853 247.703 97.6642 248.336 97.4411 248.864C97.3295 249.127 94.9304 255.301 89.2396 261.37C82.3772 268.705 73.6735 272.504 63.9656 272.504L64.0773 272.451Z" fill="#322E55"/><path d="M273.689 95.8857C268.277 95.8857 263.2 92.5612 259.462 86.5983C255.836 80.7937 253.827 73.0366 253.827 64.8046C253.827 56.5727 255.836 48.8684 259.462 43.011C263.2 36.9953 268.222 33.7236 273.689 33.7236C279.157 33.7236 284.178 37.0481 287.916 43.011C291.543 48.8156 293.551 56.5727 293.551 64.8046C293.551 73.0366 291.543 80.7409 287.916 86.5983C284.178 92.614 279.157 95.8857 273.689 95.8857ZM273.689 35.8344C264.037 35.8344 256.115 48.8156 256.115 64.7519C256.115 80.6882 263.981 93.6694 273.689 93.6694C283.397 93.6694 291.264 80.6882 291.264 64.7519C291.264 48.8156 283.341 35.8344 273.689 35.8344Z" fill="#322E55"/><path d="M271.848 87.9705C263.591 87.9705 256.896 77.5222 256.896 64.7521C256.896 51.982 263.591 41.5337 271.848 41.5337C280.105 41.5337 286.8 51.982 286.8 64.7521C286.8 77.5222 280.105 87.9705 271.848 87.9705ZM271.848 43.6972C264.874 43.6972 259.183 53.1429 259.183 64.7521C259.183 76.3613 264.818 85.807 271.848 85.807C278.878 85.807 284.513 76.3613 284.513 64.7521C284.513 53.1429 278.878 43.6972 271.848 43.6972Z" fill="#322E55"/><path d="M97.8867 45.4386C94.595 45.4386 90.8569 45.0692 86.7283 44.2249C86.0588 44.1194 85.724 43.5389 85.8356 42.9057C85.9472 42.2724 86.5609 41.9558 87.2304 42.0614C98.0541 44.1721 105.977 43.3806 110.217 39.7395C114.178 36.4151 113.732 31.8242 113.732 31.6131C113.732 30.9798 114.122 30.5049 114.736 30.4521C115.406 30.4521 115.908 30.8215 115.963 31.402C115.963 31.6131 116.521 37.2066 111.723 41.3226C108.487 44.0666 103.912 45.4386 97.831 45.4386H97.8867Z" fill="#322E55"/><path d="M116.522 43.4857C114.625 43.4857 112.56 43.1163 110.44 42.4303C109.826 42.2193 109.548 41.586 109.771 41.0583C109.994 40.4779 110.663 40.214 111.221 40.4251C115.183 41.7443 118.586 41.6916 121.375 40.2668C125.95 37.945 127.513 32.8264 127.513 32.7208C127.68 32.1404 128.294 31.8238 128.963 31.9293C129.577 32.0876 129.912 32.668 129.8 33.3013C129.688 33.5651 128.015 39.4225 122.603 42.1665C120.706 43.0636 118.753 43.5385 116.577 43.5385L116.522 43.4857Z" fill="#322E55"/></g><path d="M269.871 35.3005L210.062 41.1051L172.012 54.139L130.614 64.0069C130.614 64.0069 128.438 68.3339 131.227 73.2942C131.562 72.7138 168.943 74.719 168.943 74.719L198.401 82.5288L202.084 84.2702L214.358 86.3282L222.615 87.1725L230.315 90.3386L268.365 94.6657L271.434 94.3491L277.292 93.7686C277.292 93.7686 287.725 92.6077 291.686 67.9645C293.137 53.7696 286.721 31.3955 269.871 35.1949V35.3005Z" fill="#DA5A40"/><path d="M124.197 49.2312C124.197 49.2312 135.021 43.3739 129.274 32.7145C128.381 31.8702 129.72 16.1978 111.086 23.1633C108.798 23.7965 105.786 22.319 100.708 21.4219C95.6314 20.5776 70.5806 19.2584 72.6449 36.8833C72.4217 36.8833 58.1389 45.168 70.3574 65.1675C71.9754 67.7532 80.0095 82.7924 85.0866 82.1592C90.1637 81.5259 124.643 54.772 124.643 54.772L124.197 49.3368V49.2312Z" fill="#DA5A40"/><path d="M125.09 44.2709C125.09 44.2709 130.613 82.8452 126.931 86.3279C123.249 89.8107 119.566 90.655 116.219 91.2355C112.871 91.8159 114.991 93.2935 114.991 93.2935L116.219 93.6101L117.446 95.9319C117.446 95.9319 120.18 106.064 107.348 115.931C107.962 116.248 94.4598 106.908 87.43 97.6733L82.5203 77.6738C82.5203 77.6738 68.7395 87.225 65.0572 70.3917C64.4435 67.806 68.7396 57.8854 79.1727 65.4841C78.838 64.6398 94.5156 60.5766 85.9236 43.1628C86.8163 43.1628 105.841 45.7485 110.193 41.4214C110.528 41.738 120.013 43.1628 121.854 41.738C121.854 41.1048 125.146 44.3237 125.146 44.3237L125.09 44.2709Z" fill="#9A907D"/><path d="M179.04 50.076C179.04 50.076 162.135 48.9151 168.607 88.0697C168.607 89.2307 199.907 106.328 199.907 106.328C199.907 106.328 207.606 101.104 214.301 85.7479C213.966 86.3284 202.027 84.3231 202.027 84.3231C202.027 84.3231 192.207 53.8753 210.284 40.5248C210.619 40.5248 197.396 39.9443 193.379 44.0075C194.272 44.0075 186.628 42.8466 183.28 45.7489C183.057 46.0655 179.04 50.076 179.04 50.076Z" fill="#9A907D"/><path d="M221.387 69.5476C221.387 69.5476 229.365 67.8062 230.927 90.4441C231.262 90.7608 268.029 95.0878 268.029 95.0878C268.029 95.0878 270.484 111.921 264.012 120.892C263.677 120.575 237.678 124.691 230.313 113.61C228.472 112.765 211.567 88.9666 221.387 69.5476Z" fill="#9A907D"/><path d="M112.258 80.3128C111.421 80.3128 110.528 80.1545 109.524 79.7851C108.91 79.5741 108.631 78.9408 108.855 78.4131C109.078 77.8327 109.747 77.5688 110.305 77.7799C111.421 78.1493 112.816 78.4131 113.485 77.7799C115.55 75.6164 112.035 65.9069 108.91 59.7329C108.631 59.2052 108.91 58.5719 109.468 58.3081C110.026 58.0443 110.696 58.3081 110.975 58.8358C112.37 61.527 119.009 75.247 115.215 79.3102C114.545 80.049 113.541 80.4184 112.314 80.4184L112.258 80.3128Z" fill="#322E55"/><path d="M77.2758 75.0886C76.8295 75.0886 76.3832 74.8247 76.2158 74.4553C75.7136 73.9804 73.203 73.2944 70.6365 72.925C69.967 72.8195 69.5765 72.2918 69.6881 71.6586C69.7997 71.0253 70.3576 70.6559 71.0271 70.7615C72.0313 70.867 73.0914 71.1309 74.0956 71.3419C72.1987 69.9699 69.7439 69.4422 69.6881 69.4422C69.0744 69.3367 68.6838 68.7563 68.7954 68.123C68.9069 67.5426 69.5207 67.1732 70.1902 67.2787C70.4691 67.2787 77.3874 68.809 78.4475 73.8221C78.5591 74.4026 78.2243 74.9302 77.6106 75.0886C77.499 75.0886 77.3874 75.0886 77.2758 75.0886Z" fill="#322E55"/><path d="M91.0564 65.9595C90.3869 65.9595 89.8848 65.4845 89.8848 64.8513C89.8848 62.3712 90.6658 60.7353 92.1722 60.0493C95.4082 58.5718 100.374 62.2656 100.932 62.635C101.434 63.0044 101.545 63.6904 101.099 64.1653C100.708 64.6402 99.9832 64.7458 99.481 64.3236C97.6957 62.9516 94.5156 61.3158 93.1207 61.949C92.2839 62.3184 92.1165 63.6904 92.1165 64.7985C92.1165 65.4318 91.6701 65.9067 91.0006 65.9067L91.0564 65.9595Z" fill="#322E55"/><path d="M105.842 86.9086C97.027 86.9086 95.967 80.3652 95.9112 80.3124C95.7996 79.6792 96.3017 79.2043 96.8596 79.0987C97.5291 78.9932 98.0313 79.4153 98.1429 79.9958C98.1429 80.2069 99.0913 85.0616 106.623 84.745C107.293 84.745 107.795 85.1672 107.795 85.8004C107.795 86.4336 107.349 86.9086 106.679 86.9086C106.4 86.9086 106.121 86.9086 105.786 86.9086H105.842Z" fill="#322E55"/><path d="M201.916 84.692C201.414 84.692 200.912 84.3226 200.801 83.8477C192.878 49.5478 208.946 39.9965 209.616 39.5744C210.174 39.2578 210.843 39.4688 211.178 39.9438C211.513 40.4715 211.289 41.1047 210.787 41.4213C210.787 41.4213 206.938 43.7431 204.092 49.9171C201.414 55.7217 199.071 66.2228 203.032 83.32C203.144 83.9005 202.753 84.4809 202.14 84.6392C202.028 84.6392 201.972 84.6392 201.861 84.6392L201.916 84.692Z" fill="#322E55"/><path d="M188.581 66.3817C187.911 66.3817 187.409 65.9067 187.409 65.2735C187.409 48.4402 192.598 43.7965 192.821 43.5854C193.267 43.216 193.993 43.216 194.439 43.6909C194.83 44.1131 194.83 44.7991 194.439 45.2212C194.327 45.3268 189.752 49.7594 189.752 65.3263C189.752 65.9067 189.25 66.3817 188.581 66.3817Z" fill="#322E55"/><path d="M177.535 69.0203C176.921 69.0203 176.475 68.5981 176.363 68.0704C175.415 59.2052 176.084 52.6618 178.372 48.7042C180.269 45.4852 182.612 45.1158 182.891 45.1158C183.56 45.0103 184.063 45.4852 184.174 46.0657C184.286 46.6989 183.784 47.1738 183.226 47.2794C183.058 47.2794 176.586 48.7569 178.651 67.8593C178.651 68.4926 178.26 68.9675 177.647 69.0203H177.535Z" fill="#322E55"/><path d="M229.98 95.0878C229.31 95.0878 228.808 94.5601 228.808 93.9797C229.087 78.4656 225.907 73.347 224.01 71.7111C222.838 70.6557 221.834 70.7613 221.778 70.7613C221.109 70.8668 220.607 70.4447 220.495 69.8642C220.384 69.231 220.886 68.756 221.444 68.5977C221.611 68.5977 223.396 68.3867 225.349 69.9697C228.083 72.2388 231.319 78.2545 231.04 94.0325C231.04 94.6129 230.538 95.0878 229.868 95.0878H229.98Z" fill="#322E55"/><path d="M273.219 95.5629C267.807 95.5629 262.73 92.2384 258.991 86.2755C255.365 80.4709 253.356 72.7139 253.356 64.4819C253.356 56.2499 255.365 48.5456 258.991 42.6882C262.73 36.6726 267.751 33.4009 273.219 33.4009C278.686 33.4009 283.707 36.7253 287.446 42.6882C291.072 48.4929 293.081 56.2499 293.081 64.4819C293.081 72.7139 291.072 80.4182 287.446 86.2755C283.707 92.2912 278.686 95.5629 273.219 95.5629ZM273.219 35.5116C263.566 35.5116 255.644 48.4928 255.644 64.4291C255.644 80.3654 263.511 93.3466 273.219 93.3466C282.926 93.3466 290.793 80.3654 290.793 64.4291C290.793 48.4928 282.871 35.5116 273.219 35.5116Z" fill="#322E55"/><path d="M271.377 87.6478C263.12 87.6478 256.425 77.1995 256.425 64.4294C256.425 51.6592 263.12 41.2109 271.377 41.2109C279.634 41.2109 286.329 51.6592 286.329 64.4294C286.329 77.1995 279.634 87.6478 271.377 87.6478ZM271.377 43.3745C264.403 43.3745 258.712 52.8201 258.712 64.4294C258.712 76.0386 264.347 85.4842 271.377 85.4842C278.407 85.4842 284.042 76.0386 284.042 64.4294C284.042 52.8201 278.407 43.3745 271.377 43.3745Z" fill="#322E55"/><path d="M97.416 45.1158C94.1243 45.1158 90.3862 44.7464 86.2576 43.9021C85.5881 43.7966 85.2533 43.2161 85.3649 42.5829C85.4765 41.9497 86.0902 41.6331 86.7597 41.7386C97.5834 43.8494 105.506 43.0578 109.746 39.4168C113.707 36.0923 113.261 31.5014 113.261 31.2903C113.261 30.6571 113.652 30.1822 114.265 30.1294C114.935 30.1294 115.437 30.4988 115.493 31.0792C115.493 31.2903 116.051 36.8838 111.253 40.9998C108.017 43.7438 103.442 45.1158 97.3603 45.1158H97.416Z" fill="#322E55"/><path d="M116.051 43.163C114.154 43.163 112.09 42.7936 109.969 42.1076C109.356 41.8965 109.077 41.2633 109.3 40.7356C109.523 40.1551 110.193 39.8913 110.751 40.1024C114.712 41.4216 118.115 41.3688 120.905 39.9441C125.48 37.6222 127.042 32.5036 127.042 32.3981C127.209 31.8176 127.823 31.501 128.492 31.6065C129.106 31.7648 129.441 32.3453 129.329 32.9785C129.218 33.2424 127.544 39.0997 122.132 41.8437C120.235 42.7408 118.283 43.2157 116.107 43.2157L116.051 43.163Z" fill="#322E55"/><path d="M120.236 67.0673C121.376 67.0673 122.301 64.9174 122.301 62.2654C122.301 59.6133 121.376 57.4634 120.236 57.4634C119.096 57.4634 118.172 59.6133 118.172 62.2654C118.172 64.9174 119.096 67.0673 120.236 67.0673Z" fill="#322E55"/><path d="M116.61 90.7609C116.61 90.7609 99.1469 94.8769 91.3359 85.3257C91.3359 85.3257 98.7006 98.5707 116.889 93.8215C116.666 93.8215 116.666 90.7609 116.666 90.7609H116.61Z" fill="#322E55"/></svg>';
+
+    // ── i18n ──
+    const i18n = {
+      en: {
+        city: 'Improv in Vienna',
+        tagline: 'Find your scene.',
+        events: 'Events',
+        news: 'News',
+        rooms: 'Rooms',
+        groups: 'Groups',
+        begin: 'Start improv',
+        all: 'All',
+        jamF: 'Jam',
+        showF: 'Show',
+        workshopF: 'Workshop',
+        english: 'English',
+        german: 'German',
+        beg: 'Beginner-friendly',
+        begToggle: 'Beginner',
+        footerText: 'Know about an event we\'re missing?',
+        partners: 'Featuring',
+        footerBtn: 'Submit an event',
+        empty: 'Nothing here — try another filter.',
+        today: 'Today',
+        menu: 'Menu',
+        backToEvents: 'Back to events',
+        performers: 'Performers',
+        credits: 'Credits',
+        website: 'Website',
+        addToCal: 'Add to calendar',
+        pastEvents: 'Show earlier dates',
+        moreDates: 'Load more dates',
+        newsTitle: 'News',
+        newsDesc: 'Improv news and newsletter archive coming soon.',
+        roomsTitle: 'Rooms',
+        roomsDesc: 'Rehearsal and performance spaces in Vienna — coming soon.',
+        gT: ['Watch a show first', 'Try a beginner workshop', 'Join an open jam', 'Find your people'],
+        gP: [
+          'See what improv looks like live. Vienna has shows almost every weekend — English and German.',
+          'Most schools offer beginner courses. No experience needed. You\'ll learn the basics and meet your first scene partners.',
+          'Open jams are where you play. Many are beginner-friendly. Just show up and get on stage.',
+          'After a few jams, start a practice group, join a troupe, or keep jamming. The scene is yours.'
+        ],
+        newbieTitle: 'New to improv?',
+        newbieSub: 'Learn how to start — from your first show to your first jam.',
+        newsletterTitle: 'Stay in the loop',
+        newsletterSub: 'Get weekly improv events and community news delivered to your inbox.',
+        newsletterBtn: 'Subscribe',
+        newsletterPlaceholder: 'your@email.com',
+        newsletterThanks: 'You\'re in! Watch your inbox.'
+      },
+      de: {
+        city: 'Improv in Wien',
+        tagline: 'Finde deine Szene.',
+        events: 'Events',
+        news: 'News',
+        rooms: 'Räume',
+        groups: 'Gruppen',
+        begin: 'Impro starten',
+        all: 'Alle',
+        jamF: 'Jam',
+        showF: 'Show',
+        workshopF: 'Workshop',
+        english: 'Englisch',
+        german: 'Deutsch',
+        beg: 'Anfängerfreundlich',
+        begToggle: 'Anfänger',
+        footerText: 'Fehlt ein Event? Sag uns Bescheid!',
+        partners: 'Featuring',
+        footerBtn: 'Event einreichen',
+        empty: 'Nichts gefunden — probier einen anderen Filter.',
+        today: 'Heute',
+        menu: 'Menü',
+        backToEvents: 'Zurück zu Events',
+        performers: 'Mitwirkende',
+        credits: 'Credits',
+        website: 'Website',
+        addToCal: 'Zum Kalender hinzufügen',
+        pastEvents: 'Frühere Termine anzeigen',
+        moreDates: 'Mehr Termine laden',
+        newsTitle: 'News',
+        newsDesc: 'Improv-News und Newsletter-Archiv — demnächst verfügbar.',
+        roomsTitle: 'Räume',
+        roomsDesc: 'Probe- und Aufführungsräume in Wien — demnächst verfügbar.',
+        gT: ['Zuerst eine Show anschauen', 'Anfänger-Workshop besuchen', 'Offenen Jam besuchen', 'Finde deine Leute'],
+        gP: [
+          'Schau dir an, wie Impro live aussieht. Wien hat fast jedes Wochenende Shows — auf Deutsch und Englisch.',
+          'Die meisten Schulen bieten Anfängerkurse an. Keine Erfahrung nötig.',
+          'Offene Jams sind wo du spielst. Viele sind anfängerfreundlich. Einfach hingehen und mitmachen.',
+          'Nach ein paar Jams: Starte eine Übungsgruppe oder tritt einer Truppe bei.'
+        ],
+        newbieTitle: 'Neu bei Impro?',
+        newbieSub: 'Erfahre, wie du anfängst — von deiner ersten Show bis zu deinem ersten Jam.',
+        newsletterTitle: 'Bleib auf dem Laufenden',
+        newsletterSub: 'Erhalte wöchentlich Impro-Events und Community-News per E-Mail.',
+        newsletterBtn: 'Abonnieren',
+        newsletterPlaceholder: 'deine@email.com',
+        newsletterThanks: 'Du bist dabei! Schau in dein Postfach.'
+      }
+    };
+
+    // ── VENUE ADDRESSES ──
+    const venueAddresses = {
+      'TAG Theater': 'Gumpendorfer Str. 67, 1060 Wien',
+      'Improtheater Wien': 'Neustiftgasse 8, 1070 Wien',
+      'Die Bühne': 'Mariahilfer Str. 81, 1060 Wien',
+      'Café Schmalzhaftl': 'Schmalzhofgasse 1, 1060 Wien',
+      'Impro Studio': 'Westbahnstr. 16, 1070 Wien',
+    };
+
+    const rooms = [
+      {
+        name: 'TAG Theater',
+        address: 'Gumpendorfer Str. 67, 1060 Wien',
+        image: 'https://images.unsplash.com/photo-1503095396549-807759245b35?w=640&q=80',
+        capacity: 60,
+        priceEn: '€25/hr', priceDe: '€25/Std.',
+        equipment: ['Stage', 'Lights', 'Sound', 'Chairs', 'Piano'],
+        equipmentDe: ['Bühne', 'Licht', 'Ton', 'Stühle', 'Klavier'],
+        en: 'Black box theater with a full lighting rig and sound system. Popular for shows and showcases. Book via the TAG website or email.',
+        de: 'Blackbox-Theater mit kompletter Licht- und Tonanlage. Beliebt für Shows und Showcases. Buchbar über die TAG-Website oder per E-Mail.'
+      },
+      {
+        name: 'Impro Studio',
+        address: 'Westbahnstr. 16, 1070 Wien',
+        image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=640&q=80',
+        capacity: 25,
+        priceEn: '€15/hr', priceDe: '€15/Std.',
+        equipment: ['Mats', 'Mirror', 'Speaker'],
+        equipmentDe: ['Matten', 'Spiegel', 'Lautsprecher'],
+        en: 'Cozy rehearsal space ideal for workshops and practice groups. Wooden floors, mirrors on one wall, and a portable speaker. Hourly bookings available.',
+        de: 'Gemütlicher Proberaum, ideal für Workshops und Übungsgruppen. Holzboden, Spiegel an einer Wand und ein tragbarer Lautsprecher. Stundenweise buchbar.'
+      },
+      {
+        name: 'Die Bühne',
+        address: 'Mariahilfer Str. 81, 1060 Wien',
+        image: 'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?w=640&q=80',
+        capacity: 40,
+        priceEn: '€20/hr', priceDe: '€20/Std.',
+        equipment: ['Stage', 'Lights', 'Chairs', 'Projector'],
+        equipmentDe: ['Bühne', 'Licht', 'Stühle', 'Beamer'],
+        en: 'Mid-size venue with a raised stage and flexible seating. Great for both rehearsals and small shows. Projector available for multimedia formats.',
+        de: 'Mittelgroßer Raum mit erhöhter Bühne und flexibler Bestuhlung. Perfekt für Proben und kleine Shows. Beamer für Multimedia-Formate verfügbar.'
+      },
+      {
+        name: 'Café Schmalzhaftl — Hinterzimmer',
+        address: 'Schmalzhofgasse 1, 1060 Wien',
+        image: null,
+        capacity: 30,
+        priceEn: '€10/hr', priceDe: '€10/Std.',
+        equipment: ['Chairs', 'Speaker'],
+        equipmentDe: ['Stühle', 'Lautsprecher'],
+        en: 'The back room of the café, available for jams and informal rehearsals. No stage — flat floor, intimate setting. Drinks from the bar included in the deal.',
+        de: 'Das Hinterzimmer des Cafés, verfügbar für Jams und informelle Proben. Keine Bühne — ebener Boden, intime Atmosphäre. Getränke von der Bar inklusive.'
+      },
+      {
+        name: 'Raum 7',
+        address: 'Neubaugasse 44, 1070 Wien',
+        image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=640&q=80',
+        capacity: 20,
+        priceEn: '€12/hr', priceDe: '€12/Std.',
+        equipment: ['Mats', 'Mirror', 'Whiteboard'],
+        equipmentDe: ['Matten', 'Spiegel', 'Whiteboard'],
+        en: 'A new 80m² rehearsal space near Westbahnhof. Clean, bright, and affordable. Perfect for practice groups and small workshops.',
+        de: 'Ein neuer 80m² Proberaum in der Nähe des Westbahnhofs. Sauber, hell und günstig. Perfekt für Übungsgruppen und kleine Workshops.'
+      },
+    ];
+
+    // ── DATA (keyed by week offset, events repeat weekly in prototype) ──
+    const weekEvents = {
+      0: [
+        { title: 'Monday Night Jam', venue: 'TAG Theater', time: '19:00', endTime: '21:00', type: 'jam', lang: 'de', beg: true, day: 0, en: 'Open jam — all levels', de: 'Offener Jam — alle Levels' },
+        { title: 'English Improv Jam', venue: 'Improtheater Wien', time: '20:00', endTime: '22:00', type: 'jam', lang: 'en', beg: true, day: 1, en: 'The weekly English jam', de: 'Der wöchentliche englische Jam' },
+        { title: 'Langform Workshop', venue: 'Die Bühne', time: '18:30', endTime: '21:00', type: 'workshop', lang: 'de', beg: false, day: 2, en: 'Deep-dive into longform', de: 'Vertiefung Langform-Strukturen' },
+        { title: 'Improv Comedy Night', venue: 'Café Schmalzhaftl', time: '20:30', endTime: '22:00', type: 'show', lang: 'de', beg: false, day: 3, en: 'Fully improvised comedy', de: 'Improvisierte Comedy-Show' },
+        { title: 'English Improv Show', venue: 'TAG Theater', time: '20:00', endTime: '22:00', type: 'show', lang: 'en', beg: false, day: 4,
+          en: 'English-language improv night', de: 'Englischsprachige Impro-Show',
+          address: 'Drachengasse 2, 1010 Wien',
+          detailEn: 'It\'s Friday night, it\'s in the Bar and it\'s the English Lovers off the leash! What more could you want? It\'s hijinx, high emotions and the odd high note, soul searching, ham acting and deep thought; the quest for the ultimate story, the will to soar and the grace to fail.',
+          detailDe: 'Es ist Freitagabend, in der Bar, und die English Lovers sind losgelassen! Was will man mehr? Jede Menge Spaß, große Emotionen und der eine oder andere hohe Ton, Seelenerforschung, theatralisches Spiel und tiefe Gedanken.',
+          performers: ['Anne Weiner', 'Bronwynn Mertz-Penzinger', 'Dennis Kozeluh', 'Jacob Banigan', 'Jim Libby', 'Kathy Tanner', 'Michael Smulik', 'Sophie Kozeluh'],
+          credits: [{ role: 'Improvised Music', names: 'Belush Korenyi and guests' }, { role: 'Improvised Lighting', names: 'Matthias Vanura, Michaela Pink' }],
+          url: 'https://drachengasse.at/'
+        },
+        { title: 'Musical Improv Jam', venue: 'Improtheater Wien', time: '19:00', endTime: '21:00', type: 'jam', lang: 'de', beg: false, day: 4, en: 'Improvised songs & scenes', de: 'Improvisierte Songs & Szenen' },
+        { title: 'Anfänger-Workshop', venue: 'Die Bühne', time: '14:00', endTime: '17:00', type: 'workshop', lang: 'de', beg: true, day: 5, en: 'Beginner workshop — no experience needed', de: 'Anfänger-Workshop — ohne Vorkenntnisse' },
+        { title: 'Saturday Night Showdown', venue: 'TAG Theater', time: '20:00', endTime: '22:00', type: 'show', lang: 'de', beg: false, day: 5, en: 'Two teams battle on stage', de: 'Zwei Teams battlen auf der Bühne' },
+        { title: 'Sunday Open Jam', venue: 'Café Schmalzhaftl', time: '17:00', endTime: '19:00', type: 'jam', lang: 'en', beg: true, day: 6, en: 'Relaxed Sunday jam', de: 'Entspannter Sonntag-Jam' },
+        { title: 'Impro-Krimi', venue: 'TAG Theater', time: '19:30', endTime: '21:00', type: 'show', lang: 'de', beg: false, day: 6, en: 'Improvised crime mystery', de: 'Improvisierter Krimi' },
+      ],
+      1: [
+        { title: 'Monday Night Jam', venue: 'TAG Theater', time: '19:00', endTime: '21:00', type: 'jam', lang: 'de', beg: true, day: 0, en: 'Open jam — all levels', de: 'Offener Jam — alle Levels' },
+        { title: 'Storytelling Workshop', venue: 'Impro Studio', time: '18:00', endTime: '20:30', type: 'workshop', lang: 'en', beg: true, day: 0, en: 'Learn to tell stories on stage', de: 'Geschichten auf der Bühne erzählen' },
+        { title: 'English Improv Jam', venue: 'Improtheater Wien', time: '20:00', endTime: '22:00', type: 'jam', lang: 'en', beg: true, day: 1, en: 'The weekly English jam', de: 'Der wöchentliche englische Jam' },
+        { title: 'Character Workshop', venue: 'Die Bühne', time: '18:30', endTime: '21:00', type: 'workshop', lang: 'de', beg: false, day: 2, en: 'Building memorable characters', de: 'Unvergessliche Figuren erschaffen' },
+        { title: 'Open Mic Improv', venue: 'Café Schmalzhaftl', time: '20:00', endTime: '22:00', type: 'show', lang: 'de', beg: true, day: 3, en: 'Anyone can sign up to perform', de: 'Jeder kann sich anmelden und auftreten' },
+        { title: 'The Yes Ands: Longform', venue: 'TAG Theater', time: '20:00', endTime: '22:00', type: 'show', lang: 'en', beg: false, day: 4, en: 'Full-length improvised play', de: 'Abendfüllendes improvisiertes Stück' },
+        { title: 'Impro Disco', venue: 'Improtheater Wien', time: '21:00', endTime: '23:00', type: 'show', lang: 'de', beg: false, day: 5, en: 'Improv meets DJ — a wild ride', de: 'Impro trifft DJ — wilder Ritt' },
+        { title: 'Sunday Open Jam', venue: 'Café Schmalzhaftl', time: '17:00', endTime: '19:00', type: 'jam', lang: 'en', beg: true, day: 6, en: 'Relaxed Sunday jam', de: 'Entspannter Sonntag-Jam' },
+      ],
+      2: [
+        { title: 'Monday Night Jam', venue: 'TAG Theater', time: '19:00', endTime: '21:00', type: 'jam', lang: 'de', beg: true, day: 0, en: 'Open jam — all levels', de: 'Offener Jam — alle Levels' },
+        { title: 'English Improv Jam', venue: 'Improtheater Wien', time: '20:00', endTime: '22:00', type: 'jam', lang: 'en', beg: true, day: 1, en: 'The weekly English jam', de: 'Der wöchentliche englische Jam' },
+        { title: 'Scenework Intensive', venue: 'Impro Studio', time: '10:00', endTime: '17:00', type: 'workshop', lang: 'en', beg: false, day: 2, en: 'Full-day scenework deep dive', de: 'Ganztages-Szenenarbeit' },
+        { title: 'Stegreif: Game Night', venue: 'Die Bühne', time: '20:00', endTime: '22:00', type: 'show', lang: 'de', beg: true, day: 4, en: 'Audience picks the games', de: 'Das Publikum wählt die Spiele' },
+        { title: 'Impro Marathon', venue: 'TAG Theater', time: '18:00', endTime: '22:00', type: 'show', lang: 'de', beg: false, day: 5, en: '4 hours of non-stop improv', de: '4 Stunden Impro am Stück' },
+        { title: 'Sunday Open Jam', venue: 'Café Schmalzhaftl', time: '17:00', endTime: '19:00', type: 'jam', lang: 'en', beg: true, day: 6, en: 'Relaxed Sunday jam', de: 'Entspannter Sonntag-Jam' },
+      ],
+      3: [
+        { title: 'Monday Night Jam', venue: 'TAG Theater', time: '19:00', endTime: '21:00', type: 'jam', lang: 'de', beg: true, day: 0, en: 'Open jam — all levels', de: 'Offener Jam — alle Levels' },
+        { title: 'Clown & Impro Workshop', venue: 'Impro Studio', time: '17:00', endTime: '19:30', type: 'workshop', lang: 'de', beg: true, day: 1, en: 'Where clown meets improv', de: 'Wo Clownerie auf Impro trifft' },
+        { title: 'English Improv Jam', venue: 'Improtheater Wien', time: '20:00', endTime: '22:00', type: 'jam', lang: 'en', beg: true, day: 2, en: 'The weekly English jam (moved to Wed)', de: 'Der wöchentliche englische Jam (auf Mi verschoben)' },
+        { title: 'Improv Comedy Night', venue: 'Café Schmalzhaftl', time: '20:30', endTime: '22:00', type: 'show', lang: 'de', beg: false, day: 3, en: 'Fully improvised comedy', de: 'Improvisierte Comedy-Show' },
+        { title: 'Bühnenfieber: Musical', venue: 'TAG Theater', time: '20:00', endTime: '22:00', type: 'show', lang: 'de', beg: false, day: 4, en: 'Fully improvised musical', de: 'Komplett improvisiertes Musical' },
+        { title: 'Anfänger-Workshop', venue: 'Die Bühne', time: '14:00', endTime: '17:00', type: 'workshop', lang: 'de', beg: true, day: 5, en: 'Beginner workshop — no experience needed', de: 'Anfänger-Workshop — ohne Vorkenntnisse' },
+        { title: 'Saturday Night Showdown', venue: 'TAG Theater', time: '20:00', endTime: '22:00', type: 'show', lang: 'de', beg: false, day: 5, en: 'Two teams battle on stage', de: 'Zwei Teams battlen auf der Bühne' },
+        { title: 'Impro-Krimi', venue: 'TAG Theater', time: '19:30', endTime: '21:00', type: 'show', lang: 'de', beg: false, day: 6, en: 'Improvised crime mystery', de: 'Improvisierter Krimi' },
+        { title: 'Sunday Open Jam', venue: 'Café Schmalzhaftl', time: '17:00', endTime: '19:00', type: 'jam', lang: 'en', beg: true, day: 6, en: 'Relaxed Sunday jam', de: 'Entspannter Sonntag-Jam' },
+      ],
+    };
+
+    const groups = [
+      { name: 'The Yes Ands', color: '#DA5A40', lang: 'en', en: 'English longform troupe', de: 'Englische Langform-Truppe' },
+      { name: 'Stegreif Wien', color: '#419268', lang: 'de', en: 'German shortform & games', de: 'Kurzform & Spiele' },
+      { name: 'Impro Studio', color: '#5E45C6', lang: 'de', en: 'School & performance group', de: 'Schule & Performance-Gruppe' },
+      { name: 'The Unscripted', color: '#B57210', lang: 'en', en: 'Mixed-format English group', de: 'Englische Mixed-Format-Gruppe' },
+      { name: 'Bühnenfieber', color: '#1A1918', lang: 'de', en: 'Musical improv ensemble', de: 'Musical-Impro-Ensemble' },
+    ];
+
+    const newsItems = [
+      {
+        titleEn: 'Vienna Improv Festival 2026 — Lineup Announced!',
+        titleDe: 'Vienna Improv Festival 2026 — Lineup steht fest!',
+        textEn: 'This year\'s festival brings 12 international troupes to Vienna for a weekend of longform, shortform, and musical improv. Tickets go on sale April 1st.',
+        textDe: 'Das diesjährige Festival bringt 12 internationale Truppen nach Wien für ein Wochenende voller Langform, Kurzform und Musical-Impro. Tickets ab 1. April.',
+        source: 'Vienna Improv',
+        date: 'March 20, 2026',
+        image: 'https://images.unsplash.com/photo-1523301343968-6a6ebf63c672?w=640&q=80'
+      },
+      {
+        titleEn: 'New Beginner Course Starting in April',
+        titleDe: 'Neuer Anfängerkurs startet im April',
+        textEn: 'Impro Studio is launching a new 8-week beginner course in both English and German. No experience needed — just bring yourself and a willingness to play.',
+        textDe: 'Das Impro Studio startet einen neuen 8-Wochen-Anfängerkurs auf Englisch und Deutsch. Keine Vorkenntnisse nötig — einfach vorbeikommen und mitspielen.',
+        source: 'Impro Studio',
+        date: 'March 18, 2026',
+        image: null
+      },
+      {
+        titleEn: 'The IICV Celebrates 5 Years of Improv in Vienna',
+        titleDe: 'Das IICV feiert 5 Jahre Impro in Wien',
+        textEn: 'The International Improv Community Vienna marks its 5th anniversary with a special gala show featuring alumni from across Europe. A night not to be missed.',
+        textDe: 'Die International Improv Community Vienna feiert ihr 5-jähriges Bestehen mit einer Gala-Show mit Alumni aus ganz Europa. Ein Abend, den man nicht verpassen sollte.',
+        source: 'The IICV',
+        date: 'March 15, 2026',
+        image: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=640&q=80'
+      },
+      {
+        titleEn: 'Community Spotlight: How Sunday Jams Built a Scene',
+        titleDe: 'Community Spotlight: Wie Sonntags-Jams eine Szene aufgebaut haben',
+        textEn: 'What started as a casual meetup at Café Schmalzhaftl has grown into Vienna\'s most beloved weekly jam. We talked to the organizers about how it all began.',
+        textDe: 'Was als lockeres Treffen im Café Schmalzhaftl begann, ist zu Wiens beliebtestem wöchentlichen Jam geworden. Wir haben mit den Organisatoren gesprochen.',
+        source: 'SPONTAN',
+        date: 'March 10, 2026',
+        image: null
+      },
+      {
+        titleEn: 'Rehearsal Space Alert: New Room Available in the 7th District',
+        titleDe: 'Proberaum-Tipp: Neuer Raum im 7. Bezirk verfügbar',
+        textEn: 'A new 80m² rehearsal space near Westbahnhof is now available for hourly bookings. Perfect for practice groups and small shows.',
+        textDe: 'Ein neuer 80m² Proberaum in der Nähe des Westbahnhofs ist ab sofort stundenweise buchbar. Ideal für Übungsgruppen und kleine Shows.',
+        source: 'SPONTAN',
+        date: 'March 5, 2026',
+        image: null
+      },
+    ];
+
+    const dayNames = {
+      en: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      de: ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
+    };
+    const monthNames = {
+      en: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+      de: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']
+    };
+
+    // ── DATE HELPERS ──
+    function getToday() {
+      const d = new Date(); d.setHours(0,0,0,0); return d;
+    }
+    function addDays(date, n) {
+      const d = new Date(date); d.setDate(d.getDate() + n); return d;
+    }
+    function getWeekday(date) {
+      return (date.getDay() + 6) % 7; // 0=Mon
+    }
+    function getWeekOffset(date) {
+      const today = getToday();
+      const todayMon = addDays(today, -getWeekday(today));
+      const dateMon = addDays(date, -getWeekday(date));
+      return Math.round((dateMon - todayMon) / (7*86400000));
+    }
+    function formatDayHeader(date) {
+      const day = dayNames[lang][getWeekday(date)];
+      const month = monthNames[lang][date.getMonth()];
+      if (lang === 'de') return day + ', ' + date.getDate() + '. ' + month;
+      return day + ', ' + month + ' ' + date.getDate();
+    }
+    function formatShortDate(date) {
+      const month = monthNames[lang][date.getMonth()];
+      const m = month.slice(0, 3);
+      if (lang === 'de') return date.getDate() + '. ' + m;
+      return m + ' ' + date.getDate();
+    }
+    function isSameDay(a, b) {
+      return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+    }
+
+    // Get events for a specific date
+    function getEventsForDate(date) {
+      const wo = getWeekOffset(date);
+      const wd = getWeekday(date);
+      const evts = weekEvents[wo] || weekEvents[wo % 4] || []; // cycle weeks for prototype
+      return evts.filter(e => e.day === wd).map((e, i) => ({
+        ev: e,
+        weekOffset: wo < 0 ? (((wo % 4) + 4) % 4) : (wo % 4), // map to 0-3 for prototype
+        idx: evts.indexOf(e)
+      }));
+    }
+
+    // ── HELPERS ──
+    function t(key) { return i18n[lang][key]; }
+
+    function toggleTheme() {
+      isDark = !isDark;
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      document.getElementById('icon-moon').style.display = isDark ? 'none' : 'block';
+      document.getElementById('icon-sun').style.display = isDark ? 'block' : 'none';
+    }
+
+    function toggleBeginner() {
+      beginnerMode = !beginnerMode;
+      try { localStorage.setItem('spontan-beginner', beginnerMode); } catch(e) {}
+      render();
+    }
+
+    function setLang(l) {
+      lang = l;
+      document.querySelectorAll('.lang-btn').forEach(b =>
+        b.classList.toggle('active', b.textContent.trim() === l.toUpperCase())
+      );
+      render();
+    }
+
+    function toggleMenu() {
+      menuOpen = !menuOpen;
+      document.getElementById('slide-menu').classList.toggle('open', menuOpen);
+      document.getElementById('menu-overlay').classList.toggle('open', menuOpen);
+      document.body.style.overflow = menuOpen ? 'hidden' : '';
+    }
+
+    function showMenuPage(page) {
+      activePage = page;
+      if (menuOpen) toggleMenu();
+      document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+      document.getElementById('page-' + page).classList.add('active');
+      document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+      // If it's a tab page, activate the tab
+      const tabEl = document.querySelector('.nav-tab[data-page="' + page + '"]');
+      if (tabEl) tabEl.classList.add('active');
+      document.querySelector('.sticky-nav').style.display = (page === 'events' || page === 'news' || page === 'rooms') ? '' : 'none';
+      document.getElementById('filters-row').style.display = page === 'events' ? 'flex' : 'none';
+      document.getElementById('footer-cta').style.display = page === 'events' ? '' : 'none';
+      render();
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    function scrollToSticky() {
+      const sticky = document.querySelector('.sticky-nav');
+      const rect = sticky.getBoundingClientRect();
+      if (rect.top < 0) {
+        sticky.scrollIntoView({ behavior: 'instant' });
+      }
+    }
+
+    function goHome() {
+      if (menuOpen) toggleMenu();
+      showTab('events');
+    }
+
+    function showTab(tab) {
+      activePage = tab;
+      document.querySelector('.sticky-nav').style.display = '';
+      document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+      document.getElementById('page-' + tab).classList.add('active');
+      document.querySelectorAll('.nav-tab').forEach(el =>
+        el.classList.toggle('active', el.dataset.page === tab)
+      );
+      document.getElementById('filters-row').style.display = tab === 'events' ? 'flex' : 'none';
+      document.getElementById('footer-cta').style.display = tab === 'events' ? '' : 'none';
+      render();
+      scrollToSticky();
+    }
+
+    function setFilter(f) {
+      activeFilter = f;
+      render();
+      scrollToSticky();
+    }
+
+    function loadPast() {
+      pastDaysShown += 7;
+      render();
+    }
+
+    function loadMore() {
+      visibleDays += 7;
+      render();
+    }
+
+    function dismissNewbie(e) {
+      e.stopPropagation();
+      newbieDismissed = true;
+      const banner = document.getElementById('newbie-banner');
+      if (banner) {
+        banner.style.transition = 'opacity 0.2s, transform 0.2s';
+        banner.style.opacity = '0';
+        banner.style.transform = 'translateY(-8px)';
+        setTimeout(() => { banner.remove(); }, 200);
+      }
+    }
+
+    function subscribeNewsletter() {
+      const input = document.getElementById('newsletter-input');
+      const email = input.value.trim();
+      if (!email || !email.includes('@')) {
+        input.style.borderColor = 'var(--accent)';
+        setTimeout(() => { input.style.borderColor = ''; }, 1500);
+        return;
+      }
+      // In a real app, this would POST to an API
+      const btn = document.getElementById('newsletter-btn');
+      const card = document.getElementById('newsletter-card');
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+      input.style.display = 'none';
+      btn.style.background = 'var(--teal)';
+      document.getElementById('newsletter-sub').textContent = t('newsletterThanks');
+    }
+
+    function downloadICS(btn) {
+      const icsData = decodeURIComponent(btn.dataset.ics);
+      const gcalUrl = decodeURIComponent(btn.dataset.gcal);
+
+      // Check if there's already a popover open, remove it
+      const existing = document.querySelector('.cal-popover');
+      if (existing) { existing.remove(); return; }
+
+      const popover = document.createElement('div');
+      popover.className = 'cal-popover';
+      popover.innerHTML =
+        '<a href="' + gcalUrl + '" target="_blank" class="cal-popover-item">' +
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>' +
+          'Google Calendar</a>' +
+        '<button onclick="saveICS(this)" data-ics="' + encodeURIComponent(icsData) + '" class="cal-popover-item">' +
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
+          '.ics ' + (lang === 'de' ? 'herunterladen' : 'download') + '</button>';
+      btn.style.position = 'relative';
+      btn.appendChild(popover);
+
+      // Close on outside click
+      setTimeout(() => {
+        document.addEventListener('click', function closer(e) {
+          if (!popover.contains(e.target) && e.target !== btn) {
+            popover.remove();
+            document.removeEventListener('click', closer);
+          }
+        });
+      }, 10);
+    }
+
+    function saveICS(btn) {
+      const icsData = decodeURIComponent(btn.dataset.ics);
+      const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'event.ics';
+      a.click();
+      URL.revokeObjectURL(url);
+      const popover = btn.closest('.cal-popover');
+      if (popover) popover.remove();
+    }
+
+    function showDetail(weekOffset, eventIndex) {
+      const evts = weekEvents[weekOffset];
+      if (!evts || !evts[eventIndex]) return;
+      const ev = evts[eventIndex];
+
+      activePage = 'detail';
+      document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+      document.getElementById('page-detail').classList.add('active');
+      document.querySelector('.sticky-nav').style.display = 'none';
+
+      const typeLabel = ev.type === 'jam' ? t('jamF') : ev.type === 'show' ? t('showF') : t('workshopF');
+      const langLabel = ev.lang === 'en' ? t('english') : t('german');
+
+      // Find the actual date for this event
+      const today = getToday();
+      const todayWd = getWeekday(today);
+      const mondayOfWeek = addDays(today, -todayWd + (weekOffset * 7));
+      // Actually we need a date — let's compute from the rolling view
+      const baseMon = addDays(today, -getWeekday(today));
+      const targetMon = addDays(baseMon, weekOffset * 7);
+      const eventDate = addDays(targetMon, ev.day);
+
+      const dateStr = formatDayHeader(eventDate);
+
+      const fullDesc = lang === 'de' ? (ev.detailDe || ev.de) : (ev.detailEn || ev.en);
+      let performersHTML = '';
+      let creditsHTML = '';
+      if (ev.performers) {
+        performersHTML = '<div class="detail-section-label">' + t('performers') + '</div>' +
+          '<div class="detail-performers">' +
+          ev.performers.map(p => '<span class="detail-performer">' + p + '</span>').join('') + '</div>';
+      }
+      if (ev.credits) {
+        creditsHTML = '<div class="detail-section-label">' + t('credits') + '</div>' +
+          '<div class="detail-credits">' +
+          ev.credits.map(c => c.role + ': ' + c.names).join('<br>') + '</div>';
+      }
+      const begTag = ev.beg ? '<span class="tag tag-beg">' + t('beg') + '</span>' : '';
+      const venueAddr = ev.address || venueAddresses[ev.venue] || ev.venue;
+      const mapQuery = encodeURIComponent(venueAddr);
+      const mapHTML = '<div class="detail-map">' +
+        '<iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=' + mapQuery + '&zoom=15"></iframe>' +
+        '</div>';
+      const ticketBtn = ev.url
+        ? '<a class="detail-action-btn detail-action-primary" href="' + ev.url + '" target="_blank">' +
+            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>' +
+            t('website') + '</a>' : '';
+
+      // Build calendar links
+      function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+      const startParts = ev.time.split(':');
+      const endParts = ev.endTime ? ev.endTime.split(':') : null;
+      const startDT = new Date(eventDate);
+      startDT.setHours(parseInt(startParts[0]), parseInt(startParts[1]), 0);
+      const endDT = endParts ? new Date(eventDate) : new Date(startDT.getTime() + 2*3600000);
+      if (endParts) endDT.setHours(parseInt(endParts[0]), parseInt(endParts[1]), 0);
+
+      // Google Calendar URL (uses local time with timezone)
+      const fmt = function(d) {
+        return d.getFullYear() + pad2(d.getMonth()+1) + pad2(d.getDate()) + 'T' + pad2(d.getHours()) + pad2(d.getMinutes()) + '00';
+      };
+      const gcalUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+        '&text=' + encodeURIComponent(ev.title) +
+        '&dates=' + fmt(startDT) + '/' + fmt(endDT) +
+        '&ctz=Europe/Vienna' +
+        '&location=' + encodeURIComponent(venueAddr) +
+        '&details=' + encodeURIComponent(fullDesc);
+
+      // .ics file generation
+      const icsContent = 'BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//SPONTAN//EN\nBEGIN:VEVENT\n' +
+        'DTSTART;TZID=Europe/Vienna:' + fmt(startDT) + '\n' +
+        'DTEND;TZID=Europe/Vienna:' + fmt(endDT) + '\n' +
+        'SUMMARY:' + ev.title + '\n' +
+        'LOCATION:' + venueAddr + '\n' +
+        'DESCRIPTION:' + fullDesc.replace(/\n/g, '\\n') + '\n' +
+        'END:VEVENT\nEND:VCALENDAR';
+
+      const calBtn = '<button class="detail-action-btn detail-action-secondary" onclick="downloadICS(this)" data-ics="' + encodeURIComponent(icsContent) + '" data-gcal="' + encodeURIComponent(gcalUrl) + '">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="12" y1="14" x2="12" y2="18"/><line x1="10" y1="16" x2="14" y2="16"/></svg>' +
+        t('addToCal') + '</button>';
+
+      document.getElementById('detail-container').innerHTML =
+        '<button class="detail-back" onclick="goHome()">' +
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>' +
+          t('backToEvents') + '</button>' +
+        '<div class="detail-type-bar ' + ev.type + '"></div>' +
+        '<div class="detail-title">' + ev.title + '</div>' +
+        '<div class="detail-meta">' +
+          '<div class="detail-meta-row">' +
+            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>' +
+            '<span>' + dateStr + ' · ' + ev.time + (ev.endTime ? ' – ' + ev.endTime : '') + '</span></div>' +
+          '<div class="detail-meta-row">' +
+            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>' +
+            '<span>' + venueAddr + '</span></div>' +
+        '</div>' +
+        '<div class="detail-tags">' +
+          '<span class="tag tag-' + ev.type + '">' + typeLabel + '</span>' +
+          '<span class="tag tag-lang">' + langLabel + '</span>' + begTag + '</div>' +
+        '<div class="detail-description">' + fullDesc + '</div>' +
+        mapHTML +
+        performersHTML + creditsHTML +
+        '<div class="detail-actions">' + ticketBtn + calBtn + '</div>';
+
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    function eventCard(ev, weekOffset, eventIndex) {
+      const typeLabel = ev.type === 'jam' ? t('jamF') : ev.type === 'show' ? t('showF') : t('workshopF');
+      const langLabel = ev.lang === 'en' ? t('english') : t('german');
+      const begTag = ev.beg ? '<span class="tag tag-beg">' + t('beg') + '</span>' : '';
+      return '<div class="event-card" onclick="showDetail(' + weekOffset + ',' + eventIndex + ')">' +
+        '<div class="card-accent ' + ev.type + '"></div>' +
+        '<div class="card-body">' +
+          '<div class="card-time">' + ev.time + '</div>' +
+          '<div class="card-info">' +
+            '<div class="card-title">' + ev.title + '</div>' +
+            '<div class="card-venue">' + ev.venue + '</div>' +
+            '<div class="card-tags">' +
+              '<span class="tag tag-' + ev.type + '">' + typeLabel + '</span>' +
+              '<span class="tag tag-lang">' + langLabel + '</span>' + begTag +
+            '</div>' +
+          '</div>' +
+          '<div class="card-chevron">' +
+            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }
+
+    // ── RENDER ──
+    function render() {
+      document.getElementById('hero-city').textContent = t('city');
+      document.getElementById('hero-tagline').textContent = t('tagline');
+      document.getElementById('nav-events').textContent = t('events');
+      document.getElementById('nav-events').dataset.label = t('events');
+      document.getElementById('nav-news').textContent = t('news');
+      document.getElementById('nav-news').dataset.label = t('news');
+      document.getElementById('nav-rooms').textContent = t('rooms');
+      document.getElementById('nav-rooms').dataset.label = t('rooms');
+      document.getElementById('menu-events').textContent = t('events');
+      document.getElementById('menu-news').textContent = t('news');
+      document.getElementById('menu-rooms').textContent = t('rooms');
+      document.getElementById('menu-begin').textContent = t('begin');
+      document.getElementById('burger-label').textContent = t('menu');
+      document.getElementById('footer-text').textContent = t('footerText');
+      document.getElementById('footer-btn-text').textContent = t('footerBtn');
+      document.getElementById('footer-tagline').textContent = t('tagline');
+      document.getElementById('partners-label').textContent = t('partners');
+      // Rooms page
+      const capacityIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
+      const priceIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>';
+      document.getElementById('rooms-container').innerHTML = rooms.map(room => {
+        const desc = lang === 'de' ? room.de : room.en;
+        const price = lang === 'de' ? room.priceDe : room.priceEn;
+        const equip = lang === 'de' ? room.equipmentDe : room.equipment;
+        const imgHTML = room.image
+          ? '<div class="room-card-image" style="background-image:url(' + room.image + ')"></div>'
+          : '';
+        return '<div class="room-card">' +
+          imgHTML +
+          '<div class="room-card-body">' +
+            '<div class="room-card-name">' + room.name + '</div>' +
+            '<div class="room-card-address">' + room.address + '</div>' +
+            '<div class="room-card-details">' +
+              '<span class="room-detail-chip">' + capacityIcon + ' ' + room.capacity + ' ' + (lang === 'de' ? 'Plätze' : 'seats') + '</span>' +
+              '<span class="room-detail-chip">' + priceIcon + ' ' + price + '</span>' +
+            '</div>' +
+            '<div class="room-card-desc">' + desc + '</div>' +
+            '<div class="room-card-equipment">' +
+              equip.map(e => '<span class="room-equip-tag">' + e + '</span>').join('') +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+
+      // Newsletter
+      document.getElementById('newsletter-title').textContent = t('newsletterTitle');
+      document.getElementById('newsletter-sub').textContent = t('newsletterSub');
+      document.getElementById('newsletter-btn-text').textContent = t('newsletterBtn');
+      document.getElementById('newsletter-input').placeholder = t('newsletterPlaceholder');
+
+      // Filters
+      const filterKeys = ['all', 'jam', 'show', 'workshop', 'en', 'de'];
+      const filterLabels = [t('all'), t('jamF'), t('showF'), t('workshopF'), t('english'), t('german')];
+      document.getElementById('filters').innerHTML = filterKeys.map((f, i) =>
+        '<button class="filter-chip ' + (activeFilter === f ? 'active' : '') + '" onclick="setFilter(\'' + f + '\')">' + filterLabels[i] + '</button>'
+      ).join('');
+
+      // Beginner toggle
+      const begToggle = document.getElementById('beginner-toggle');
+      begToggle.classList.toggle('active', beginnerMode);
+      document.getElementById('beginner-toggle-label').textContent = t('begToggle');
+
+      // Events — rolling from today
+      const today = getToday();
+      let html = '';
+
+      // New to improv banner
+      if (!newbieDismissed) {
+        html += '<div class="newbie-banner" id="newbie-banner" onclick="showMenuPage(\'begin\')">' +
+          '<div class="newbie-banner-illust">' + mascotSVG + '</div>' +
+          '<div class="newbie-banner-body">' +
+            '<div class="newbie-banner-title">' + t('newbieTitle') + '</div>' +
+            '<div class="newbie-banner-sub">' + t('newbieSub') + '</div>' +
+          '</div>' +
+          '<button class="newbie-banner-close" onclick="dismissNewbie(event)" title="Dismiss">' +
+            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+          '</button>' +
+        '</div>';
+      }
+
+      // Past events button — show the date range that would be loaded
+      const pastEnd = addDays(today, -(pastDaysShown + 1));
+      const pastStart = addDays(today, -(pastDaysShown + 7));
+      const pastLabel = formatShortDate(pastStart) + ' – ' + formatShortDate(pastEnd);
+      html += '<button class="events-nav-btn" onclick="loadPast()">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>' +
+        pastLabel + '</button>';
+
+      // Past days (if loaded)
+      for (let i = pastDaysShown; i > 0; i--) {
+        const date = addDays(today, -i);
+        const dayEvents = getEventsForDate(date);
+        let filtered = dayEvents;
+        if (['jam','show','workshop'].includes(activeFilter)) filtered = dayEvents.filter(o => o.ev.type === activeFilter);
+        else if (activeFilter === 'en' || activeFilter === 'de') filtered = dayEvents.filter(o => o.ev.lang === activeFilter);
+        if (beginnerMode) filtered = filtered.filter(o => o.ev.beg);
+        if (filtered.length === 0) continue;
+        html += '<div class="day-section">' +
+          '<div class="day-header">' + formatDayHeader(date) + '</div>' +
+          filtered.map(o => eventCard(o.ev, o.weekOffset, o.idx)).join('') +
+        '</div>';
+      }
+
+      // Today + next days
+      for (let i = 0; i < visibleDays; i++) {
+        const date = addDays(today, i);
+        const dayEvents = getEventsForDate(date);
+        let filtered = dayEvents;
+        if (['jam','show','workshop'].includes(activeFilter)) filtered = dayEvents.filter(o => o.ev.type === activeFilter);
+        else if (activeFilter === 'en' || activeFilter === 'de') filtered = dayEvents.filter(o => o.ev.lang === activeFilter);
+        if (beginnerMode) filtered = filtered.filter(o => o.ev.beg);
+        if (filtered.length === 0) continue;
+        const todayPill = i === 0 ? ' <span class="today-pill">' + t('today') + '</span>' : '';
+        html += '<div class="day-section">' +
+          '<div class="day-header">' + formatDayHeader(date) + todayPill + '</div>' +
+          filtered.map(o => eventCard(o.ev, o.weekOffset, o.idx)).join('') +
+        '</div>';
+      }
+
+      // Load more button — show the date range that would be loaded
+      const moreStart = addDays(today, visibleDays);
+      const moreEnd = addDays(today, visibleDays + 6);
+      const moreLabel = formatShortDate(moreStart) + ' – ' + formatShortDate(moreEnd);
+      html += '<button class="events-nav-btn" onclick="loadMore()">' +
+        moreLabel +
+        ' <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>' +
+        '</button>';
+
+      document.getElementById('events-container').innerHTML = html;
+
+      // News page
+      document.getElementById('news-container').innerHTML = newsItems.map(item => {
+        const title = lang === 'de' ? item.titleDe : item.titleEn;
+        const text = lang === 'de' ? item.textDe : item.textEn;
+        const imgHTML = item.image
+          ? '<div class="news-card-image" style="background-image:url(' + item.image + ')"></div>'
+          : '';
+        return '<div class="news-card">' +
+          imgHTML +
+          '<div class="news-card-body">' +
+            '<div class="news-card-source">' + item.source + '</div>' +
+            '<div class="news-card-title">' + title + '</div>' +
+            '<div class="news-card-text">' + text + '</div>' +
+            '<div class="news-card-date">' + item.date + '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+
+      // Groups page
+      // Beginner page
+      const titles = t('gT');
+      const paras = t('gP');
+      document.getElementById('begin-container').innerHTML = titles.map((title, i) =>
+        '<div class="guide-step"><div class="step-num">' + (i + 1) + '</div>' +
+          '<div class="step-content"><h3>' + title + '</h3><p>' + paras[i] + '</p></div></div>'
+      ).join('');
+    }
+
+    // ── INIT ──
+    render();
+  </script>
+</body>
+</html>
